@@ -1,0 +1,82 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  
+  body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    /* height: 100vh; */
+  
+    /* display: grid; */
+  }
+  
+  header {
+    background-color: blueviolet;
+    padding: 20px;
+    border: white 1px solid;
+    /* margin: 0;
+    padding: 0; */
+  }
+
+  .full-height {
+    height: 100vh; /* Occupy the entire viewport height */
+}
+
+/* Remove margin and padding from Bootstrap grid elements */
+.container,
+.row,
+.col
+ {
+    margin: 0;
+    padding: 0;
+}
+
+ul, li {
+    text-decoration: none;
+    list-style-type: none;
+}
+
+header {
+    font-size: 35px;
+}
+
+aside {
+    background-color: blueviolet;
+    opacity: 0.3;
+    padding: 20px;
+    margin: 20px;
+    color: white;
+    border: white 1px solid;
+    font-size: 25px;
+}
+
+footer {
+    background-color: #eee;
+    padding: 20px;
+    border: white 1px solid;
+    color: blueviolet;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.card {
+    padding: 20px;
+    /* margin: 20px; */
+}
+
+.col-sm-12 {
+    margin: 0;
+    padding: 0;
+    background-color: #eee;
+    padding: 15px;
+    margin: 20px;
+    font-weight: bold }
+
+main {
+    padding: 20px;
+    margin: 20px;
+}
