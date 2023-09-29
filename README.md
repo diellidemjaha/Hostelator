@@ -30,7 +30,6 @@ Hostelator is a web application project designed to simplify hostel management. 
 - **Backend**:
   - PHP Laravel: A powerful PHP framework for building robust and scalable web applications.
   - MySQL: A relational database management system for data storage.
-  - (Add any additional backend technologies here)
 
 ## Installation
 
