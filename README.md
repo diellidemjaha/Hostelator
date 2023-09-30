@@ -25,7 +25,7 @@ Hostelator is a web application project designed to simplify hostel management. 
 - **Frontend**:
   - React: A popular JavaScript library for building user interfaces.
   - HTML/CSS: Frontend markup and styling.
-  - (Add any additional frontend technologies here)
+  - Bootstrap 5.0
 
 - **Backend**:
   - PHP Laravel: A powerful PHP framework for building robust and scalable web applications.
