@@ -9,6 +9,8 @@ class EditUserProfile extends Model
 {
     use HasFactory;
 
+    protected $table = 'edit_user_profiles'; // Replace with your actual table name
+
     protected $fillable = [
         'user_id',
         'profile_pic_path',

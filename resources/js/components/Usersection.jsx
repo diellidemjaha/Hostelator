@@ -3,6 +3,53 @@ import axios from 'axios';
 
 
 function UserSection() {
+    // Fetch user_id into local storage
+    const [userProfile, setUserProfile] = useState(null);
+    const [error, setError] = useState(null);
+
+    // useEffect(() => {
+    //     // Use a callback to set userId after retrieving it from local storage
+    //     const userId = localStorage.getItem('user_id');
+    //     console.log('user_id', userId);
+    //     setUserId(userId);
+    // }, []); // Empty dependency array ensures this runs only once
+
+    //display user profile
+    const fetchUserProfile = async () => {
+        try {
+            // const response = await axios.get(`/api/profile/${ localStorage.getItem('user_id')}`); // Replace with the correct API endpoint
+            const response = await axios.get(`/api/profile`); // Replace with the correct API endpoint
+
+            if (response.status === 200) {
+                // const userData = response.data.user;
+
+                setUserProfile(response.data.user);
+                console.log(response.data.user)
+                // setProfileData({
+                //     profile_pic: userData?.profile_pic_path,
+                //     full_name: userData?.full_name,
+                //     profession: userData?.profession,
+                //     website_link: userData?.website_link,
+                //     twitter_link: userData?.twitter_link,
+                //     instagram_link: userData?.instagram_link,
+                //     facebook_link: userData?.facebook_link,
+                // });
+
+                //         }
+            }
+        } catch (error) {
+            console.error('Error fetching profile:', error);
+            console.error('An error occurred while fetching the profile.');
+        }
+    };
+
+    // Call the fetchUserProfile function when the component mounts
+    useEffect(() => {
+        fetchUserProfile();
+    }, [])// Empty dependency array ensures the effect runs only once after mounting
+
+
+    //Update profile code below
     const [editTrigger, setEditTrigger] = useState(false);
     const [profileData, setProfileData] = useState({
         full_name: '',
@@ -16,14 +63,6 @@ function UserSection() {
     });
 
 
-    const [userId, setUserId] = useState(null);
-
-    useEffect(() => {
-
-        const userId = localStorage.getItem('user_id');
-          console.log('id', userId);
-        setUserId(userId);
-    }, []);
     // Function to handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -42,8 +81,16 @@ function UserSection() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // if (!userProfile) {
+        //     // Handle the case when userProfile is null
+        //     console.error('User profile is null.');
+
+        //     return;
+        // }
+
+
         const formData = new FormData();
-        formData.append('id', userId);
+        formData.append('id', userProfile?.profile?.id);
         // formData.append('user_id', 1);
         formData.append('full_name', profileData.full_name);
         formData.append('profession', profileData.profession);
@@ -56,7 +103,7 @@ function UserSection() {
 
 
         try {
-            const response = await axios.post(`/api/update-profile/1`, formData, {
+            const response = await axios.post(`/api/update-profile/${userProfile?.profile?.id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -65,9 +112,14 @@ function UserSection() {
             if (response.status === 200) {
                 console.log(response);
                 // Handle success
-                console.log('Profile updated successfully:', response.data.message);
-                // console.log(profileData.user_id);
-                console.log('user-profile-info', response.data.user_id);
+                // console.log('Profile updated successfully:', response.data.message);
+                // // console.log(profileData.user_id);
+                // console.log('user-profile-info', response.data.user_id);
+                console.log('res', response);
+
+                // Call fetchUserProfile to update the user profile data on the page
+                fetchUserProfile();
+
             } else {
                 // Handle other HTTP status codes
                 console.error('Error updating profile:', response.status);
@@ -96,23 +148,23 @@ function UserSection() {
                     <div className="col-lg-4">
                         <div className="card mb-4">
                             <div className="card-body text-center">
-                                <form onSubmit={handleSubmit} method="PUT" encType="multipart/form-data">
+                                <form onSubmit={handleSubmit} method="POST" encType="multipart/form-data">
                                     {editTrigger == true ?
                                         <>
                                             <label>Profile picture:</label>
                                             <input type="file" name="profile_pic" onChange={handleFileChange} />
                                         </>
                                         :
+
                                         <img
-                                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
                                             alt="avatar"
+                                            src={`storage/${userProfile?.profile?.profile_pic_path}`}
                                             className="rounded-circle img-fluid"
                                             style={{ width: '150px' }}
                                         />
                                     }
                                     {editTrigger == true ?
                                         <>
-                                            <input type="hidden" name="id" value={profileData.id} />
                                             <label>Full name:</label>
                                             <input className='form-control' type="text" name="full_name" id="" defaultValue={profileData.full_name} onChange={handleInputChange} />
                                             <label>Proffesion:</label>
@@ -122,9 +174,9 @@ function UserSection() {
                                         </>
                                         :
                                         <>
-                                            <h5 className="my-3">Welcome, John Smith</h5>
-                                            <p className="text-muted mb-1">Architect</p>
-                                            <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                                            <h5 className="my-3">Welcome, {userProfile?.profile.full_name}</h5>
+                                            <p className="text-muted mb-1">{userProfile?.profile?.profession}</p>
+                                            <p className="text-muted mb-4">{userProfile?.profile?.address}</p>
                                         </>
                                     }
                                     <div className="d-flex justify-content-center mb-2">
@@ -156,35 +208,35 @@ function UserSection() {
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <i className="fa fa-globe fa-lg text-warning"></i>
                                         {editTrigger == true ?
-                                            <input  type="text" className='form-control' defaultValue={profileData.website_link} onChange={handleInputChange}  name="website_link" id=''/>
+                                            <input type="text" className='form-control' defaultValue={profileData.website_link} onChange={handleInputChange} name="website_link" id='' />
                                             :
-                                            <p className="mb-0">https://mdbootstrap.com</p>
+                                            <p className="mb-0">{userProfile?.profile?.website_link}</p>
                                         }
                                     </li>
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <i className="fa fa-twitter fa-lg" style={{ color: '#55acee' }}></i>
                                         {editTrigger == true ?
-                                            <input  defaultValue={profileData.twitter_link} onChange={handleInputChange} type="text" className='form-control' name="twitter_link" id="" />
+                                            <input defaultValue={profileData.twitter_link} onChange={handleInputChange} type="text" className='form-control' name="twitter_link" id="" />
                                             :
                                             <>
-                                                <p className="mb-0">@mdbootstrap</p>
+                                                <p className="mb-0">{userProfile?.profile?.twitter_link}</p>
                                             </>
                                         }
                                     </li>
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <i className="fa fa-instagram fa-lg" style={{ color: '#ac2bac' }}></i>
                                         {editTrigger == true ?
-                                            <input  type="text"defaultValue={profileData.instagram_link} onChange={handleInputChange} className='form-control' name="instagram_link" id="" />
+                                            <input type="text" defaultValue={profileData.instagram_link} onChange={handleInputChange} className='form-control' name="instagram_link" id="" />
                                             :
-                                            <p className="mb-0">mdbootstrap</p>
+                                            <p className="mb-0">{userProfile?.profile?.instagram_link}</p>
                                         }
                                     </li>
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <i className="fa fa-facebook-f fa-lg" style={{ color: '#3b5998' }}></i>
                                         {editTrigger == true ?
-                                            <input  type="text" defaultValue={profileData.facebook_link} onChange={handleInputChange} className='form-control' name="facebook_link" id="" />
+                                            <input type="text" defaultValue={profileData.facebook_link} onChange={handleInputChange} className='form-control' name="facebook_link" id="" />
                                             :
-                                            <p className="mb-0">mdbootstrap</p>
+                                            <p className="mb-0">{userProfile?.profile?.facebook_link}</p>
                                         }
                                     </li>
                                 </ul>

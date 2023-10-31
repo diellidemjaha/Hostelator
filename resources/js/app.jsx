@@ -18,6 +18,7 @@ function App() {
                     <Route path="/" element={logged_in == null ? <LogInForm/> : <Dashboard />} />
                     <Route path="/login" element={logged_in == null ? <LogInForm/> :<LogInForm />} />
                     <Route path="/register" element={<RegisterForm />} />
+                    <Route path="/logout" />
                 </Routes>
             </Router>
         </>

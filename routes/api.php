@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 // use App\Models\EditUserProfile;
 use App\Http\Controllers\EditUserProfileController;
+use App\Http\Controllers\UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 // Route::put('/update-profile', [EditUserProfileController::class, 'updateUserProfile']);
 Route::post('/update-profile/{id}', [EditUserProfileController::class, 'editUserProfile']);
+Route::get('/profile', [UserProfileController::class, 'showUserProfile']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
