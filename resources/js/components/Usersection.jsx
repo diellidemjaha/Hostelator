@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 function UserSection() {
@@ -136,8 +137,18 @@ function UserSection() {
             console.error('An error occurred while updating the profile.');
         }
     };
-
-
+    const [apartments, setApartments] = useState([])
+    const getApartments = () => {
+        axios.get(`api/user-apartments/${localStorage.getItem('user_id')}`).then(
+            data => {
+                setApartments(data?.data?.apartments)
+            }
+        )
+    }
+    useEffect(() => {
+        getApartments();
+    }, [])
+    console.log("aparamentet", apartments)
 
 
 
@@ -293,23 +304,48 @@ function UserSection() {
                                 <hr />
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-sm-8 text-center mt-5">
+                        
+                            <div className="col-sm-9 text-center mt-8">
                                 <h2>Add an Apartment</h2>
                                 <p>add a location for booking on our platform following the steps below</p>
 
                                 <form action="" method="post" encType="multipart/form-data">
                                     <input className="form-control mb-1" type="text" placeholder="Apartment title" aria-label="default input example" />
                                     <input className="form-control mb-1" type="text" placeholder="Enter Location" aria-label="default input example" />
-                                    <p>Price per Night:</p><input type="number" className="form-control mb-1" min="0" placeholder="50.00 $" step=".01" />
+                                    <p>Price per Night:</p>
+                                    <input type="number" className="form-control mb-1" min="0" placeholder="50.00" step="0.01" />
+
                                     <label htmlFor="formFile" className="form-label">Upload image of Apartment below</label>
-                                    <input className="form-control mb-5" type="file" id="formFile" placeholder="Upload image" />
-                                    <button className="btn btn-primary float-center">Add in Hostelator</button>
+                                    <input className="form-control mb-1" type="file" id="formFile" placeholder="Upload image" multiple/>
+
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckParking"></input>
+                                            <label className="form-check-label" htmlFor="flexCheckParking">
+                                                Parking available
+                                            </label>
+                                    </div>
+
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckWiFi"></input>
+                                            <label className="form-check-label" htmlFor="flexCheckWiFi">
+                                                Wi-Fi included
+                                            </label>
+                                    </div>
+
+                                    <div className="form-check">
+                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckBreakfast"></input>
+                                            <label className="form-check-label" htmlFor="flexCheckBreakfast">
+                                                Breakfast included
+                                            </label>
+                                    </div>
+
+                                    <button className="btn btn-primary float-center" type="submit">
+                                        Add in Hostelator
+                                    </button>
                                 </form>
+
                             </div>
-                        </div>
                     </div>
-                </div>
 
 
                 <div className="container">
@@ -317,45 +353,24 @@ function UserSection() {
                         <h2 className="mt-5 text-center">View your Apartments</h2>
                         <p className="text-center">list of all your apartments listed in Hostelator</p>
 
-                        <div className="col-12 col-md-6 col-lg-4">
-                            <div className="card m-4" style={{ width: '18rem' }}>
-                                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/383834719.jpg?k=a8ed632aeaf2eb621e6753e941d4fb2f858005614b603cdef5bfe644ce1a1906&o=&hp=1" className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Apartment 1</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" className="btn btn-primary float-end">View Listing</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-12 col-md-6 col-lg-4">
-                            <div className="card m-4" style={{ width: '18rem' }}>
-                                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/383834719.jpg?k=a8ed632aeaf2eb621e6753e941d4fb2f858005614b603cdef5bfe644ce1a1906&o=&hp=1" className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Apartment 2</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" className="btn btn-primary float-end">View Listing</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-12 col-md-6 col-lg-4">
-                            <div className="card m-4" style={{ width: '18rem' }}>
-                                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/383834719.jpg?k=a8ed632aeaf2eb621e6753e941d4fb2f858005614b603cdef5bfe644ce1a1906&o=&hp=1" className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Apartment 3</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" className="btn btn-primary float-end">View Listing</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-12 col-md-6 col-lg-4">
-                            <div className="card m-4" style={{ width: '18rem' }}>
-                                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/383834719.jpg?k=a8ed632aeaf2eb621e6753e941d4fb2f858005614b603cdef5bfe644ce1a1906&o=&hp=1" className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Apartment 4</h5>
-                                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    <a href="#" className="btn btn-primary float-end">View Listing</a>
-                                </div>
-                            </div>
+
+                        {apartments?.map(el => {
+                            return (
+                                <>
+                                    <div className="col-12 col-md-6 col-lg-4">
+                                        <div className="card m-4" style={{ width: '18rem' }}>
+                                            <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/383834719.jpg?k=a8ed632aeaf2eb621e6753e941d4fb2f858005614b603cdef5bfe644ce1a1906&o=&hp=1" className="card-img-top" alt="..." />
+                                            <div className="card-body">
+                                                <h5 className="card-title">{el?.title}</h5>
+                                                <p className="card-text">{el?.description}</p>
+                                                <Link to={`/SingleApartment/${localStorage.getItem('user_id')}/${el?.id}`} className="btn btn-primary float-end">View Listing</Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        })}
+
                         </div>
                     </div>
                 </div>
