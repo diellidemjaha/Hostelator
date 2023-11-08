@@ -9,6 +9,7 @@ use App\Http\Controllers\EditUserProfileController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserApartmentsController;
 use App\Http\Controllers\UserApartmentController;
+use App\Http\Controllers\ApartmentImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,8 @@ use App\Http\Controllers\UserApartmentController;
 */
 
 
+// Example routes for ApartmentImageController
+Route::post('/apartment_images', [ApartmentImageController::class, 'storeApartmentImages']);
 
 
 Route::get('/user-apartments/{user_id}/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);

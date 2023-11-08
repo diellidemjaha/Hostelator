@@ -1,12 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import 'leaflet/dist/leaflet.css';
+
+import { useMapEvents } from 'react-leaflet';
 
 
 function UserSection() {
     // Fetch user_id into local storage
     const [userProfile, setUserProfile] = useState(null);
     const [error, setError] = useState(null);
+    const [position, setPosition] = useState([0, 0]);
+    function SetMarker({ position, setPosition }) {
+        const map = useMapEvents({
+            click(e) {
+                const { lat, lng } = e.latlng;
+                setPosition([lat, lng]);
+            },
+        });
+
+        return position[0] !== 0 && position[1] !== 0 ? (
+            <Marker position={position}>
+                <Popup>Apartment Location</Popup>
+            </Marker>
+        ) : null;
+    }
 
     // useEffect(() => {
     //     // Use a callback to set userId after retrieving it from local storage
@@ -148,10 +167,57 @@ function UserSection() {
     useEffect(() => {
         getApartments();
     }, [])
-    console.log("aparamentet", apartments)
+    // console.log("aparamentet", apartments)
 
-
-
+    // const map = useMapEvents({
+    //     click: (e) => {
+    //       const { lat, lng } = e.latlng;
+    //       setLatitude(lat);
+    //       setLongitude(lng);
+    //     },
+    //   });
+    
+ 
+    const handleAddApartment = async (e) => {
+        e.preventDefault();
+        const NewApartmentformData = new FormData();
+    
+        // Append data to formData
+        NewApartmentformData.append('user_id', localStorage.getItem('user_id'));
+        NewApartmentformData.append('latitude', position[0]);
+        NewApartmentformData.append('longitude', position[1]);
+        NewApartmentformData.append('title', e.target.title.value);
+        NewApartmentformData.append('description', e.target.description.value);
+        NewApartmentformData.append('price', e.target.price.value);
+        NewApartmentformData.append('address', 'coming soon');
+        NewApartmentformData.append('parking', e.target.parking.checked ? 1 : 0);
+        NewApartmentformData.append('wi_fi', e.target.wi_fi.checked ? 1 : 0);
+        NewApartmentformData.append('breakfast_included', e.target.breakfast.checked ? 1 : 0);
+    
+        // Append image files to formData
+        NewApartmentformData.append('image1', e.target.image1.files[0]);
+        NewApartmentformData.append('image2', e.target.image2.files[0]);
+        NewApartmentformData.append('image3', e.target.image3.files[0]);
+        NewApartmentformData.append('image4', e.target.image4.files[0]);
+    
+        try {
+            const response = await axios.post('/api/apartments', NewApartmentformData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+      
+            if (response.status === 200) {
+              alert('Apartment and Images uploaded successfully');
+            } else {
+              console.error('Error creating apartment:', response.status);
+            }
+          } catch (error) {
+            console.error('Error creating apartment:', error);
+          }
+    };
+    
+      
     return (
         <section className='d-flex justify-content-center' style={{ backgroundColor: '#eee' }}>
             <div className="container py-5 text-center">
@@ -304,72 +370,103 @@ function UserSection() {
                                 <hr />
                             </div>
                         </div>
-                        
-                            <div className="col-sm-9 text-center mt-8">
-                                <h2>Add an Apartment</h2>
-                                <p>add a location for booking on our platform following the steps below</p>
 
-                                <form action="" method="post" encType="multipart/form-data">
-                                    <input className="form-control mb-1" type="text" placeholder="Apartment title" aria-label="default input example" />
-                                    <input className="form-control mb-1" type="text" placeholder="Enter Location" aria-label="default input example" />
-                                    <p>Price per Night:</p>
-                                    <input type="number" className="form-control mb-1" min="0" placeholder="50.00" step="0.01" />
+                        <div className="col-sm-9 text-center mt-8">
+                            <h2>Add an Apartment</h2>
+                            <p>add a location for booking on our platform following the steps below</p>
 
-                                    <label htmlFor="formFile" className="form-label">Upload image of Apartment below</label>
-                                    <input className="form-control mb-1" type="file" id="formFile" placeholder="Upload image" multiple/>
+                            <form onSubmit={handleAddApartment} encType="multipart/form-data">
+                                <div className="col">
+                                    <MapContainer
+                                        center={[42.6629, 21.1655]}
+                                        zoom={13}
+                                        style={{ height: '400px', width: '100%' }}
+                                    >
+                                        <TileLayer
+                                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                        />
+                                        <SetMarker position={position} setPosition={setPosition} />
+                                    </MapContainer>
 
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckParking"></input>
-                                            <label className="form-check-label" htmlFor="flexCheckParking">
-                                                Parking available
-                                            </label>
-                                    </div>
+                                </div>
 
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckWiFi"></input>
-                                            <label className="form-check-label" htmlFor="flexCheckWiFi">
-                                                Wi-Fi included
-                                            </label>
-                                    </div>
+                                <input className="form-control mb-1" name='title' id='title' type="text" placeholder="Apartment title" aria-label="default input example"  required/>
+                                <textarea required className="form-control mb-1" name='description' id='description' type="text" placeholder="Type the description" aria-label="default input example" />
+                                <p>Price per Night:</p>
+                                <input required type="number" name='price' id='price' className="form-control mb-1" min="0" placeholder="50.00" step="0.01" />
 
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" value="" id="flexCheckBreakfast"></input>
-                                            <label className="form-check-label" htmlFor="flexCheckBreakfast">
-                                                Breakfast included
-                                            </label>
-                                    </div>
-
-                                    <button className="btn btn-primary float-center" type="submit">
-                                        Add in Hostelator
-                                    </button>
-                                </form>
-
-                            </div>
-                    </div>
-
-
-                <div className="container">
-                    <div className="row">
-                        <h2 className="mt-5 text-center">View your Apartments</h2>
-                        <p className="text-center">list of all your apartments listed in Hostelator</p>
-
-
-                        {apartments?.map(el => {
-                            return (
-                                <>
-                                    <div className="col-12 col-md-6 col-lg-4">
-                                        <div className="card m-4" style={{ width: '18rem' }}>
-                                            <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/383834719.jpg?k=a8ed632aeaf2eb621e6753e941d4fb2f858005614b603cdef5bfe644ce1a1906&o=&hp=1" className="card-img-top" alt="..." />
-                                            <div className="card-body">
-                                                <h5 className="card-title">{el?.title}</h5>
-                                                <p className="card-text">{el?.description}</p>
-                                                <Link to={`/SingleApartment/${localStorage.getItem('user_id')}/${el?.id}`} className="btn btn-primary float-end">View Listing</Link>
+                                <label htmlFor="formFile" className="form-label">Upload image of Apartment below</label>
+                                <div class="container">
+                                    <div className="card">
+                                        <div class="row gap-2">
+                                            <div class="col">
+                                                <input required className="form-control mb-1" type="file" name="image1" id="image1" placeholder="Upload image" />
+                                            </div>
+                                            <div class="col">
+                                                <input className="form-control mb-1" type="file"name='image2' id="image2" placeholder="Upload image" />
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div class="col">
+                                                <input className="form-control mb-1" type="file"name='image3' id="image3" placeholder="Upload image" />
+                                            </div>
+                                            <div class="col">
+                                                <input className="form-control mb-1" type="file" name='image4' id="image4" placeholder="Upload image" />
                                             </div>
                                         </div>
                                     </div>
-                                </>
-                            )
-                        })}
+                                </div>
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" value="" name='parking' id='parking'></input>
+                                    <label className="form-check-label" htmlFor="flexCheckParking">
+                                        Parking available
+                                    </label>
+                                </div>
+
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" value="" name='wi_fi' id='wi_fi'></input>
+                                    <label className="form-check-label" htmlFor="flexCheckWiFi">
+                                        Wi-Fi included
+                                    </label>
+                                </div>
+
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" value="" name='breakfast' id='breakfast'></input>
+                                    <label className="form-check-label" htmlFor="flexCheckBreakfast">
+                                        Breakfast included
+                                    </label>
+                                </div>
+
+                                <button className="btn btn-primary float-center" type="submit">
+                                    Add in Hostelator
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+
+
+                    <div className="container">
+                        <div className="row">
+                            <h2 className="mt-5 text-center">View your Apartments</h2>
+                            <p className="text-center">list of all your apartments listed in Hostelator</p>
+
+
+                            {apartments?.map(el => {
+                                return (
+                                    <>
+                                        <div className="col-12 col-md-6 col-lg-4">
+                                            <div className="card m-4" style={{ width: '18rem' }}>
+                                                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/383834719.jpg?k=a8ed632aeaf2eb621e6753e941d4fb2f858005614b603cdef5bfe644ce1a1906&o=&hp=1" className="card-img-top" alt="..." />
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{el?.title}</h5>
+                                                    <p className="card-text">{el?.description}</p>
+                                                    <Link to={`/SingleApartment/${localStorage.getItem('user_id')}/${el?.id}`} className="btn btn-primary float-end">View Listing</Link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                            })}
 
                         </div>
                     </div>

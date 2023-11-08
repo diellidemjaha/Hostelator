@@ -20,6 +20,7 @@ class Apartment extends Model
         'parking',
         'wi_fi',
         'breakfast_included',
+        'apartment_picture_paths' => 'array',
         'available_dates' => 'array',
     ];
 

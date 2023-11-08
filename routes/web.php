@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ApartmentController as ApiController;
 use App\Http\Controllers\UserApartmentController;
 use App\Http\Controllers\UserApartmentsController;
+use App\Http\Controllers\ApartmentImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,8 @@ use App\Http\Controllers\UserApartmentsController;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::post('apartment_images', [ApartmentImageController::class, 'storeApartmentImage']);
 
     Route::get('/', [AuthController::class, 'index'])->name('dashboard.index');
     Route::post('/apartments', [ApiController::class, 'storeApartment']);
