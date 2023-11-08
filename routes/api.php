@@ -24,7 +24,8 @@ use App\Http\Controllers\ApartmentImageController;
 
 
 // Example routes for ApartmentImageController
-Route::post('/apartment_images', [ApartmentImageController::class, 'storeApartmentImages']);
+// Route::post('/apartment_images', [ApartmentImageController::class, 'storeApartmentImages']);
+Route::get('/apartment_images/{user_id}/{id}', [ApartmentImageController::class, 'getImagePaths']);
 
 
 Route::get('/user-apartments/{user_id}/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);

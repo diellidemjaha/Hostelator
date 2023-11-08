@@ -19,9 +19,13 @@ use App\Http\Controllers\ApartmentImageController;
 |
 */
 
+Route::get('/{any}', function () {
+    return view('app'); // This is your main React app view
+})->where('any', '.*');
+
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::post('apartment_images', [ApartmentImageController::class, 'storeApartmentImage']);
+    Route::post('apartment_images', [ApartmentImageController::class, 'getImagePaths']);
 
     Route::get('/', [AuthController::class, 'index'])->name('dashboard.index');
     Route::post('/apartments', [ApiController::class, 'storeApartment']);
@@ -32,6 +36,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user-apartments/{user_id}/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);
 
     Route::get('/user-apartments/{user_id}', [UserApartmentsController::class, 'ApartmentsById']);
+
+    Route::get('/apartment_images', [ApartmentImageController::class, 'getApartment']);
 });
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');
