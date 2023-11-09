@@ -157,16 +157,31 @@ function UserSection() {
         }
     };
     const [apartments, setApartments] = useState([])
-    const getApartments = () => {
-        axios.get(`api/user-apartments/${localStorage.getItem('user_id')}`).then(
-            data => {
-                setApartments(data?.data?.apartments)
-            }
-        )
-    }
+    // const getApartments = () => {
+    //     axios.get(`api/user-apartments/${localStorage.getItem('user_id')}`).then(
+    //         data => {
+    //             setApartments(data?.data?.apartments)
+    //         }
+    //     )
+    // }
+    // useEffect(() => {
+    //     getApartments();
+    // }, [])
+
     useEffect(() => {
-        getApartments();
-    }, [])
+        async function fetchApartments() {
+          try {
+            const userId = localStorage.getItem('user_id');
+            const response = await axios.get(`/api/apartments/${userId}`); // Replace with your API endpoint
+            setApartments(response.data);
+          } catch (error) {
+            console.error('Error fetching apartments:', error);
+          }
+        }
+    
+        fetchApartments();
+      }, []);
+
     // console.log("aparamentet", apartments)
 
     // const map = useMapEvents({
@@ -220,11 +235,11 @@ function UserSection() {
       
     return (
         <section className='d-flex justify-content-center' style={{ backgroundColor: '#eee' }}>
-            <div className="container py-5 text-center">
-                <div className="row">
-                    <div className="col-lg-4">
-                        <div className="card mb-4">
-                            <div className="card-body text-center">
+      <div className="container py-5 text-center">
+        <div className="row">
+          <div className="col-lg-4">
+            <div className="card mb-4">
+              <div className="card-body text-center">
                                 <form onSubmit={handleSubmit} method="POST" encType="multipart/form-data">
                                     {editTrigger == true ?
                                         <>
@@ -446,34 +461,28 @@ function UserSection() {
 
 
                     <div className="container">
-                        <div className="row">
-                            <h2 className="mt-5 text-center">View your Apartments</h2>
-                            <p className="text-center">list of all your apartments listed in Hostelator</p>
-
-
-                            {apartments?.map(el => {
-                                return (
-                                    <>
-                                        <div className="col-12 col-md-6 col-lg-4">
-                                            <div className="card m-4" style={{ width: '18rem' }}>
-                                                <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/383834719.jpg?k=a8ed632aeaf2eb621e6753e941d4fb2f858005614b603cdef5bfe644ce1a1906&o=&hp=1" className="card-img-top" alt="..." />
-                                                <div className="card-body">
-                                                    <h5 className="card-title">{el?.title}</h5>
-                                                    <p className="card-text">{el?.description}</p>
-                                                    <Link to={`/SingleApartment/${localStorage.getItem('user_id')}/${el?.id}`} className="btn btn-primary float-end">View Listing</Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                )
-                            })}
-
-                        </div>
+            <div className="row">
+              <h2 className="mt-5 text-center">View your Apartments</h2>
+              <p className="text-center">list of all your apartments listed in Hostelator</p>
+              {apartments.map((el) => (
+                <div className="col-12 col-md-6 col-lg-4" key={el.id}>
+                  <div className="card m-4" style={{ width: '18rem' }}>
+                    <img src={el.first_image_path} alt={`Thumbnail for ${el.title}`} className="card-img-top" />
+                    <div className="card-body">
+                      <h5 className="card-title">{el.title}</h5>
+                      <p className="card-text">{el.price}</p>
+                      <Link to={`/SingleApartment/${localStorage.getItem('user_id')}/${el.id}`} className="btn btn-primary float-end">View Listing</Link>
                     </div>
+                  </div>
                 </div>
+              ))}
             </div>
-        </section>
-    );
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
+
 
 export default UserSection;

@@ -7,6 +7,7 @@ import RegisterForm from './components/Register';
 import LogInForm from './components/Login';
 import "../css/app.css"
 import SingleApartment from './components/SingleAppartment';
+import Apartments from './components/Apartments';
 
 
 
@@ -16,10 +17,11 @@ function App() {
         <>
             <Router>
                 <Routes>
-                    <Route path="/" element={logged_in == null ? <LogInForm/> : <Dashboard />} />
+                    <Route path="/" element={logged_in == null ? <Apartments/> : <Dashboard />} />
                     <Route path="/login" element={logged_in == null ? <LogInForm/> :<LogInForm />} />
                     <Route path="/register" element={<RegisterForm />} />
-                    <Route path="/SingleApartment/:uid/:id" element={<SingleApartment />} />
+                    <Route path="/SingleApartment/:uid/:id" element={logged_in == null ? <LogInForm/> : <SingleApartment />} />
+                    <Route path="/Apartments/" element={<Apartments />} />
                     <Route path="/logout" />
                 </Routes>
             </Router>

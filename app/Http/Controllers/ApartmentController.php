@@ -8,10 +8,11 @@ use App\Models\ApartmentImage;
 class ApartmentController extends Controller
 {
     // Display a listing of the resource.
-    public function index()
+    public function getApartments()
     {
         $apartments = Apartment::all();
-        return view('apartments.index', compact('apartments'));
+        // return view('apartments.index', compact('apartments'));
+        return response()->json(['apartments' => $apartments]);
     }
 
     // Show the form for creating a new resource.
@@ -110,5 +111,43 @@ class ApartmentController extends Controller
     {
         $apartment->delete();
         return redirect()->route('apartments.index');
+    }
+    public function getApartmentsWithImageThumbnails()
+    {
+        $apartments = Apartment::with('images')
+            ->get();
+    
+        // Process the apartments and retrieve the first image path for each
+        $apartmentsWithThumbnails = $apartments->map(function ($apartment) {
+            $thumbnail = $apartment->images->first();
+            return [
+                'id' => $apartment->id,
+                'title' => $apartment->title,
+                'price' => $apartment->price,
+                'description' => $apartment->description,
+                'first_image_path' => $thumbnail ? $thumbnail->image_path : null,
+                // Add other apartment details as needed
+            ];
+        });
+    
+        return response()->json($apartmentsWithThumbnails);
+    }
+    public function getUserApartmentsWithThumbnails($user_id)
+    {
+        $apartments = Apartment::where('user_id', $user_id)->get();
+    
+        $result = $apartments->map(function ($apartment) {
+            $firstImage = $apartment->images->first();
+    
+            return [
+                'id' => $apartment->id,
+                'title' => $apartment->title,
+                'price' => $apartment->price,
+                'description' => $apartment->description,
+                'first_image_path' => optional($firstImage)->image_path ?? 'default-thumbnail.jpg',
+            ];
+        });
+    
+        return response()->json($result);
     }
 }

@@ -43,13 +43,18 @@ Route::get('/profile', [UserProfileController::class, 'showUserProfile']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/apartments', [ApartmentController::class, 'storeApartment']);
+
+    Route::get('/apartments/{user_id}', [ApartmentController::class, 'getUserApartmentsWithThumbnails']);
+    
+    Route::get('/apartments/{user_id}/{apartment_id}/image', [ApartmentImageController::class, 'getImageByUserId']);
     // Route::post('/apartments', [AuthController::class, 'storeApartment'])->middleware('api');
     // Route::post('/apartments', [ApartmentController::class, 'storeApartment'])->middleware('web');
-    Route::get('/apartments/index', [ApartmentController::class, 'indexApartments']);
+    Route::get('/apartments/index', [ApartmentController::class, 'getApartments']);
     Route::put('/apartments/{id}', [ApartmentController::class, 'editApartment']);
     Route::delete('/apartments/{id}', [ApartmentController::class, 'destroyApartment']);
 });
 
+Route::get('/apartments-with-thumbnails', [ApartmentController::class, 'getApartmentsWithImageThumbnails']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

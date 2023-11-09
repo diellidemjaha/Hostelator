@@ -34,13 +34,13 @@ function NavBar() {
 
       <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         <li><a href="#" className="nav-link px-2 link-light">Home</a></li>
-        <li><a href="#" className="nav-link px-2 link-light">Apartments</a></li>
+        <li><a href="/Apartments" className="nav-link px-2 link-light">Apartments</a></li>
         <li><a href="#" className="nav-link px-2 link-light">Pricing</a></li>
       </ul>
 
       <div className="col-md-3 text-end">
+        <Link to="/login"><button type="submit" className="btn btn-primary m-2">Log in</button></Link>
       <Link to="/logout"><button type="button" className="btn btn-outline-light me-2" onClick={() => handleLogout()}>Sign out</button></Link>
-        {/* <button type="submit" className="btn btn-primary">Sign-up</button> */}
       </div>
     </header>
   );
