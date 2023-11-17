@@ -80,3 +80,22 @@ main {
     padding: 20px;
     margin: 20px;
 }
+
+.carousel-inner {
+    height: 700px; /* Adjust the height as needed */
+
+}
+
+.carousel-inner img {
+    width: 100%; /* Make images 100% wide */
+    height: 100%; /* Make images 100% tall within the container */
+    object-fit: cover; /* Maintain aspect ratio, cropping if necessary */
+}
+
+@media screen and (max-width: 768px) { 
+    .carousel-inner {
+        height: 250px; /* Adjust the height as needed */
+        object-fit: cover;
+    }
+}
+

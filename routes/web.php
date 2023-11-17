@@ -7,6 +7,7 @@ use App\Http\Controllers\ApartmentController as ApiController;
 use App\Http\Controllers\UserApartmentController;
 use App\Http\Controllers\UserApartmentsController;
 use App\Http\Controllers\ApartmentImageController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/apartment_images', [ApartmentImageController::class, 'getApartment']);
 });
+Route::get('/user-names', [UserController::class, 'getAllUserNames']);
 Route::get('/apartments-with-thumbnails', [ApiController::class, 'getApartmentsWithImageThumbnails']);
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');

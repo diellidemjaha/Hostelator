@@ -10,6 +10,7 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserApartmentsController;
 use App\Http\Controllers\UserApartmentController;
 use App\Http\Controllers\ApartmentImageController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,8 @@ use App\Http\Controllers\ApartmentImageController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+
 
 
 // Example routes for ApartmentImageController
@@ -50,10 +53,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // Route::post('/apartments', [AuthController::class, 'storeApartment'])->middleware('api');
     // Route::post('/apartments', [ApartmentController::class, 'storeApartment'])->middleware('web');
     Route::get('/apartments/index', [ApartmentController::class, 'getApartments']);
-    Route::put('/apartments/{id}', [ApartmentController::class, 'editApartment']);
+    Route::put('/apartments/{id}', [ApartmentController::class, 'updateApartment']);
     Route::delete('/apartments/{id}', [ApartmentController::class, 'destroyApartment']);
 });
 
+Route::get('/user-names', [UserController::class, 'getAllUserNames']);
 Route::get('/apartments-with-thumbnails', [ApartmentController::class, 'getApartmentsWithImageThumbnails']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

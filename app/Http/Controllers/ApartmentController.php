@@ -84,7 +84,7 @@ class ApartmentController extends Controller
     }
 
     // Update the specified resource in storage.
-    public function update(Request $request, Apartment $apartment)
+    public function updateApartment(Request $request, Apartment $apartment)
     {
         $data = $request->validate([
             'user_id' => 'required',
@@ -125,7 +125,7 @@ class ApartmentController extends Controller
                 'title' => $apartment->title,
                 'price' => $apartment->price,
                 'description' => $apartment->description,
-                'first_image_path' => $thumbnail ? $thumbnail->image_path : null,
+                'first_image_path' => $thumbnail ? $thumbnail->image_path : 'default-thumbnail.jpg',
                 // Add other apartment details as needed
             ];
         });

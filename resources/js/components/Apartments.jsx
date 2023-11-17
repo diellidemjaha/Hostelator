@@ -6,7 +6,8 @@ import { useState, useEffect } from "react";
 
 function Apartments() {
     const [apartments, setApartments] = useState([])
-    const [error, setError] = useState(null);
+    const [users, setUsers] = useState([])
+    // const [error, setError] = useState(null);
 
     useEffect(() => {
         async function fetchApartments() {
@@ -18,8 +19,17 @@ function Apartments() {
                 console.error('Error fetching apartments:', error);
             }
         }
+        async function fetchUsers() {
+            try {
+                const response = await axios.get(`/api/user-names`);
+                setUsers(response.data.names);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
 
         fetchApartments();
+        fetchUsers();
     }, []);
 
     return (
@@ -71,19 +81,20 @@ function Apartments() {
                     </aside> */}
                 </div>
 
-                <div className="col-sm-8">
                     <div className="d-flex justify-content-center align-items-center">
+                <div className="col-sm-8">
 
                         <main>
                             <h2>Explore these recommended locations</h2>
                             <p>some of the recent apartments that were added</p>
-                            {apartments.map((el) => (
+                            {users.map((el) => (
                                 <div className="card m-4" key={el.id}>
                                     {/* <div className="card m-4"> */}
                                     <div className="card-body">
                                         <h5 className="card-title">{el?.title}</h5>
                                         <p className="card-text">
-                                        {el?.description}
+                                        {el?.description}<br />
+                                        <p><b>Price:</b>{el?.price} €</p>
                                         </p>
                                         <button className="btn btn-primary float-end">Book now</button>
                                     </div>
@@ -91,6 +102,10 @@ function Apartments() {
                                        src={el.first_image_path} alt={`Thumbnail for ${el.title}`} 
                                         className="card-img-bottom"
                                     />
+
+                                        <p class="card-text"><small class="text-muted">
+                                        Posted by {el?.user?.name}
+                                            </small></p>
                                 </div>
                                 ))}
                         {/* <div className="card m-4">

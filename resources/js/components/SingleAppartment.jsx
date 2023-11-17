@@ -116,7 +116,7 @@ function SingleApartment() {
               </div>
               <ul className="list-group">
                 {/* <li className="list-group-item">Address : {apartments?.address}</li> */}
-                <li className="list-group-item">Price : {apartments?.price}$</li>
+                <li className="list-group-item">Price : {apartments?.price} €</li>
                 <li className="list-group-item">Parking : {apartments?.parking == 1 ? "Yes" : "No"}</li>
                 <li className="list-group-item">Wi-Fi : {apartments?.wi_fi == 1 ? "Yes" : "No"}</li>
                 <li className="list-group-item">Breakfast : {apartments?.breakfast_included == 1 ? "Yes" : "No"}</li>

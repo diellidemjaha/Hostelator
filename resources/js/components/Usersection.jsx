@@ -470,7 +470,7 @@ function UserSection() {
                     <img src={el.first_image_path} alt={`Thumbnail for ${el.title}`} className="card-img-top" />
                     <div className="card-body">
                       <h5 className="card-title">{el.title}</h5>
-                      <p className="card-text">{el.price}</p>
+                      <p className="card-text">{el.price} €</p>
                       <Link to={`/SingleApartment/${localStorage.getItem('user_id')}/${el.id}`} className="btn btn-primary float-end">View Listing</Link>
                     </div>
                   </div>
