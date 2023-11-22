@@ -9,14 +9,34 @@ use App\Models\Apartment;
 
 class ApartmentImageController extends Controller
 {
-    public function getImagePaths($apartmentId)
-    {
-        $imagePaths = ApartmentImage::where('apartment_id', $apartmentId)
-            ->pluck('image_path')
-            ->all();
+    // public function getImagePaths($apartmentId)
+    // {
+    //     $imagePaths = ApartmentImage::where('apartment_id', $apartmentId)
+    //         ->pluck('image_path')
+    //         ->all();
 
-        return response()->json(['images' => $imagePaths]);
-    }
+    //     return response()->json([
+    //         'images' => $imagePaths
+    //     ]);
+    // }
+    public function getImagePaths($apartmentId)
+{
+    $imageData = ApartmentImage::where('apartment_id', $apartmentId)
+        ->select('id', 'image_path') // Include the 'id' field in the query
+        ->get();
+
+    // Create an array of objects with 'imagePath' and 'id'
+    $images = $imageData->map(function ($item) {
+        return [
+            'id' => $item->id,
+            'imagePath' => $item->image_path,
+        ];
+    });
+
+    return response()->json([
+        'images' => $images,
+    ]);
+}
     public function getImageByUserId($user_id, $apartment_id)
     {
         $apartment = Apartment::where('user_id', $user_id)
@@ -34,7 +54,8 @@ class ApartmentImageController extends Controller
             return response()->json(['message' => 'Image not found'], 404);
         }
 
-        return response()->json(['image_path' => $image->image_path]);
+        return response()->json([
+            'image_path' => $image->image_path
+        ]);
     }
-
 }

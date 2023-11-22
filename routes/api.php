@@ -1,6 +1,6 @@
 <?php
-use App\Http\Controllers\ApartmentController;
 
+use App\Http\Controllers\ApartmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -48,13 +48,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/apartments', [ApartmentController::class, 'storeApartment']);
 
     Route::get('/apartments/{user_id}', [ApartmentController::class, 'getUserApartmentsWithThumbnails']);
-    
+
     Route::get('/apartments/{user_id}/{apartment_id}/image', [ApartmentImageController::class, 'getImageByUserId']);
     // Route::post('/apartments', [AuthController::class, 'storeApartment'])->middleware('api');
     // Route::post('/apartments', [ApartmentController::class, 'storeApartment'])->middleware('web');
     Route::get('/apartments/index', [ApartmentController::class, 'getApartments']);
-    Route::put('/apartments/{id}', [ApartmentController::class, 'updateApartment']);
-    Route::delete('/apartments/{id}', [ApartmentController::class, 'destroyApartment']);
+    Route::put('/update/apartments/{id}', [ApartmentController::class, 'updateApartment']);
+    Route::delete('/delete/apartments/{apartment}', [ApartmentController::class, 'destroyApartment']);
+    // Route::delete('/delete/apartments/images/{id}', [ApartmentController::class, 'destroyApartmentImages']);
+    Route::delete('/delete/apartment-image/{id}', [ApartmentController::class, 'destroyApartmentImages']);
+    Route::get('/single-apartment/{apartmentId}', [ApartmentController::class, 'getApartmentById']);
 });
 
 Route::get('/user-names', [UserController::class, 'getAllUserNames']);

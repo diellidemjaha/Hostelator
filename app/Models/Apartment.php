@@ -14,14 +14,14 @@ class Apartment extends Model
         'title',
         'description',
         'price',
-        'address',
+        // 'address',
         'latitude',
         'longitude',
         'parking',
         'wi_fi',
         'breakfast_included',
-        'apartment_picture_paths' => 'array',
-        'available_dates' => 'array',
+        // 'apartment_picture_paths' => 'array',
+        // 'available_dates' => 'array',
     ];
 
     public function user()

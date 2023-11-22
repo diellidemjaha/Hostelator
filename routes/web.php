@@ -31,7 +31,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('dashboard.index');
     Route::post('/apartments', [ApiController::class, 'storeApartment']);
     Route::get('/apartments/index', [ApiController::class, 'getApartments']);
-    Route::put('/apartments/{id}', [ApiController::class, 'editApartment']);
+    // Route::put('/apartments/{id}', [ApiController::class, 'editApartment']);
     Route::delete('/apartments/{id}', [ApiController::class, 'destroyApartment']);
 
     Route::get('/user-apartments/{user_id}/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);
@@ -39,9 +39,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user-apartments/{user_id}', [UserApartmentsController::class, 'ApartmentsById']);
 
     Route::get('/apartment_images', [ApartmentImageController::class, 'getApartment']);
+    Route::put('/update/apartments/{apartment}', [ApiController::class, 'updateApartment']);
 });
 Route::get('/user-names', [UserController::class, 'getAllUserNames']);
 Route::get('/apartments-with-thumbnails', [ApiController::class, 'getApartmentsWithImageThumbnails']);
+Route::get('/single-apartment/{apartmentId}', [ApartmentController::class, 'getApartmentById']);
 
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/registerUser', [AuthController::class, 'registerPost']);

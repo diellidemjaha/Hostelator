@@ -3,6 +3,7 @@ import NavBar from './Navbar';
 // import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 
 function Apartments() {
     const [apartments, setApartments] = useState([])
@@ -31,7 +32,7 @@ function Apartments() {
         fetchApartments();
         fetchUsers();
     }, []);
-
+console.log('users',users)
     return (
         <div>
 
@@ -96,7 +97,7 @@ function Apartments() {
                                         {el?.description}<br />
                                         <p><b>Price:</b>{el?.price} €</p>
                                         </p>
-                                        <button className="btn btn-primary float-end">Book now</button>
+                                        <Link    to={`/SingleApartment/${el.user.id}/${el.id}`}><button type='submit' className="btn btn-primary float-end">Book now</button></Link>
                                     </div>
                                     <img
                                        src={el.first_image_path} alt={`Thumbnail for ${el.title}`} 

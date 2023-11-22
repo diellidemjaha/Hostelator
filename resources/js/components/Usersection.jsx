@@ -471,7 +471,7 @@ function UserSection() {
                     <div className="card-body">
                       <h5 className="card-title">{el.title}</h5>
                       <p className="card-text">{el.price} €</p>
-                      <Link to={`/SingleApartment/${localStorage.getItem('user_id')}/${el.id}`} className="btn btn-primary float-end">View Listing</Link>
+                      <Link to={`/UpdateApartment/${el?.id}`} className="btn btn-primary float-end">View Listing</Link>
                     </div>
                   </div>
                 </div>
