@@ -28,10 +28,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('apartment_images', [ApartmentImageController::class, 'getImagePaths']);
 
-    Route::get('/', [AuthController::class, 'index'])->name('dashboard.index');
+    Route::get('/', [AuthController::class, 'index']);
     Route::post('/apartments', [ApiController::class, 'storeApartment']);
     Route::get('/apartments/index', [ApiController::class, 'getApartments']);
-    // Route::put('/apartments/{id}', [ApiController::class, 'editApartment']);
     Route::delete('/apartments/{id}', [ApiController::class, 'destroyApartment']);
 
     Route::get('/user-apartments/{user_id}/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);

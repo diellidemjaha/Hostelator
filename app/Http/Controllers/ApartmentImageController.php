@@ -19,9 +19,9 @@ class ApartmentImageController extends Controller
     //         'images' => $imagePaths
     //     ]);
     // }
-    public function getImagePaths($apartmentId)
+    public function getImagePaths($id)
 {
-    $imageData = ApartmentImage::where('apartment_id', $apartmentId)
+    $imageData = ApartmentImage::where('apartment_id', $id)
         ->select('id', 'image_path') // Include the 'id' field in the query
         ->get();
 

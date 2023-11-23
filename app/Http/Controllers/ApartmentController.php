@@ -331,4 +331,53 @@ class ApartmentController extends Controller
 
         return response()->json($result);
     }
+    public function updateApartmentImages(Request $request, $id)
+{
+    try {
+        // Find the apartment
+        $apartment = Apartment::find($id);
+
+        if (!$apartment) {
+            return response()->json(['message' => 'Apartment not found'], 404);
+        }
+
+        // Clear existing images for the apartment
+        $apartment->images()->delete();
+
+        // Update apartment images
+        $apartmentImages = [];
+
+        for ($i = 1; $i <= 4; $i++) {
+            $imageKey = "image{$i}";
+
+            if ($request->hasFile($imageKey)) {
+                $image = $request->file($imageKey);
+                $imageName = time() . "_{$i}." . $image->getClientOriginalExtension();
+
+                $directory = '/apartment_images';
+                $imagePath = $directory . '/' . $imageName;
+
+                $image->move(public_path($directory), $imageName);
+
+                $apartmentImage = new ApartmentImage();
+                $apartmentImage->apartment_id = $apartment->id;
+                $apartmentImage->image_path = $imagePath;
+                $apartmentImage->save();
+
+                $apartmentImages[] = $apartmentImage;
+            }
+        }
+
+        Log::info('Apartment Images Updated:', ['apartment_id' => $id, 'images' => $apartmentImages]);
+
+        return response()->json([
+            'message' => 'Apartment Images Updated',
+            'apartment_id' => $apartment->id,
+            'images' => $apartmentImages,
+        ], 200);
+    } catch (\Exception $e) {
+        Log::error('Update failed: ' . $e->getMessage());
+        return response()->json(['message' => 'Update failed', 'error' => $e->getMessage()], 500);
+    }
+}
 }

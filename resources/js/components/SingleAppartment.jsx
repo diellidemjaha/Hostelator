@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import NavBar from "./Navbar";
+import Footer from "./Footer";
 
 
 function SingleApartment() {
@@ -21,9 +23,10 @@ function SingleApartment() {
 
   const getApartmentImages = () => {
     // Use the correct parameter names: id and user_id
-    axios.get(`/api/apartment_images/${id}/${localStorage.getItem('user_id')}`).then(
+    axios.get(`/api/apartment_images/${id}`).then(
       (response) => {
         setImagePaths(response?.data?.images);
+        console.log("response 1", response?.data.images)
       }
     );
   }
@@ -46,13 +49,13 @@ function SingleApartment() {
   }, [])
 
   // console.log("aparamentet", apartments)
-  console.log("id", id)
+  // console.log("id", id)
 
-  console.log("dion",position)
+  // console.log("dion",position)
   return (
 
     <>
-
+    <NavBar />
       <section style={{ backgroundColor: '#eee' }}>
         <center>
 
@@ -62,7 +65,7 @@ function SingleApartment() {
                 <div className="carousel-inner">
                   {imagePaths.map((path, index) => (
                     <div className="carousel-item active">
-                      <img src={path} className="d-block w-100" alt={`Image ${index + 1}`} />
+                      <img src={path?.imagePath} className="d-block w-100" alt={`Image ${index + 1}`} />
                     </div>
                   ))}
                 </div>
@@ -133,6 +136,7 @@ function SingleApartment() {
           </div>
         </center>
       </section>
+      <Footer />
     </>
   )
 }

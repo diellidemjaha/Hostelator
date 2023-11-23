@@ -4,6 +4,7 @@ import NavBar from './Navbar';
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import Footer from './Footer';
 
 function Apartments() {
     const [apartments, setApartments] = useState([])
@@ -35,10 +36,8 @@ function Apartments() {
 console.log('users',users)
     return (
         <div>
-
             <NavBar />
-
-            <div className="container">
+            <div className="container justify-content-center align-items-center">
                 <div className="row">
                     <div className="col-sm-12">
                         <form className="d-flex justify-content-between align-items-center">
@@ -70,7 +69,6 @@ console.log('users',users)
                     </div>
                 </div>
 
-                <div className="row">
                     {/* <div className="col-sm-4">
                     <aside>
                     <h2 className="text-center">Navigate to:</h2>
@@ -78,18 +76,19 @@ console.log('users',users)
                     <li>Apartments</li>
                     <li>Sign in</li>
                     <li>Register</li>
-                        </ul>
-                    </aside> */}
+                    </ul>
+                </aside> */}
                 </div>
 
                     <div className="d-flex justify-content-center align-items-center">
-                <div className="col-sm-8">
+                <div className="row">
+                <div className="col-sm-9">
 
                         <main>
                             <h2>Explore these recommended locations</h2>
                             <p>some of the recent apartments that were added</p>
                             {users.map((el) => (
-                                <div className="card m-4" key={el.id}>
+                                <div className="card m-2" key={el.id}>
                                     {/* <div className="card m-4"> */}
                                     <div className="card-body">
                                         <h5 className="card-title">{el?.title}</h5>
@@ -97,7 +96,7 @@ console.log('users',users)
                                         {el?.description}<br />
                                         <p><b>Price:</b>{el?.price} €</p>
                                         </p>
-                                        <Link    to={`/SingleApartment/${el.user.id}/${el.id}`}><button type='submit' className="btn btn-primary float-end">Book now</button></Link>
+                                        <Link    to={`/SingleApartment/${el.id}`}><button type='submit' className="btn btn-primary float-end">Book now</button></Link>
                                     </div>
                                     <img
                                        src={el.first_image_path} alt={`Thumbnail for ${el.title}`} 
@@ -128,7 +127,9 @@ console.log('users',users)
                     </main>
                     </div>
                 </div>
-            </div></div>
+            </div>
+            <Footer />
+            </div>
 
     );
 }

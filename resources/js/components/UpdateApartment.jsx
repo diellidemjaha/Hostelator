@@ -60,7 +60,7 @@ function UpdateApartment() {
         }
         async function fetchApartmentImages() {
             try {
-                const response = await axios.get(`/api/apartment_images/${apartmentId}/${localStorage.getItem('user_id')}`);
+                const response = await axios.get(`/api/apartment_images/${apartmentId}/`);
                 setImages(response?.data?.images);
             } catch (error) {
                 console.error('Error:', error);
@@ -88,21 +88,29 @@ function UpdateApartment() {
             breakfast_included: e.target.elements.breakfast.checked ? 1 : 0
         }
 
-        updatedApartmentData.append('image1', e.target.elements.image1.files[0]);
-        updatedApartmentData.append('image2', e.target.elements.image2.files[0]);
-        updatedApartmentData.append('image3', e.target.elements.image3.files[0]);
-        updatedApartmentData.append('image4', e.target.elements.image4.files[0]);
+        for (let i = 1; i <= 4; i++) {
+            const fileInput = document.querySelector(`#image${i}`);
+        
+            if (fileInput && fileInput.files.length > 0) {
+                updatedApartmentData.append(`image${i}`, fileInput.files[0]);
+            }
+        }
 
+        console.log('Updated Apartment Data:', updatedApartmentData);
 
-        // console.log('Updated Apartment Data:', updatedApartmentData);
         try {
-            const response = await axios.put(`/api/update/apartments/${apartmentId}`, payload, {
-
-            });
-
+            const response = await axios.put(`/api/update/apartments/${apartmentId}`, payload);
             if (response.status === 200) {
-                alert('Apartment and Images updated successfully');
-                navigate('/');
+                axios.post(`/api/update/apartment-image/${apartmentId}`, updatedApartmentData).then(
+                    data => {
+                        alert('Apartment and Images updated successfully');
+                        navigate('/');
+                    }
+                ).catch(
+                    err => {
+                        console.log(err)
+                    }
+                )
             } else {
                 console.error('Error updating apartment:', response.status);
             }
@@ -110,6 +118,7 @@ function UpdateApartment() {
             console.error('Error updating apartment:', error);
         }
     };
+
 
 
     const handleDeleteApartment = async () => {
@@ -126,24 +135,17 @@ function UpdateApartment() {
             console.error('Error deleting apartment:', error);
         }
     };
-    const handleFileChange = (e, index) => {
-        const newImages = [...images];
-        newImages[index] = URL.createObjectURL(e.target.files[0]);
-        setImages(newImages);
-    };
 
-    const handleRemoveImage = (index) => {
-        const newImages = [...images];
-        newImages[index] = null;
-        setImages(newImages);
-        setShowButtonsIndex(null);
-    };
-
-    const handleDeleteImage = (index) => {
-        const newImages = [...images];
-        newImages.splice(index, 1);
-        setImages(newImages);
-        setShowButtonsIndex(null);
+    const handleDeleteImage = (id) => {
+        axios.delete(`/api/delete/apartment-image/${id}`).then(
+            data => {
+                window.location.href = `/UpdateApartment/${apartmentId}`
+            }
+        ).catch(
+            err => {
+                console.log(err)
+            }
+        )
     };
 
     const handleCancelDelete = () => {
@@ -200,47 +202,46 @@ function UpdateApartment() {
                 <div className="container">
                     <div className="card">
                         <div className="row gap-2">
-                        {[...Array(4)].map((_, index) => (
-    <div key={index} className="col">
-        {index < images.length && images[index] ? (
-            <div className="image-container">
-                <img
-                    className="w-25"
-                    src={images[index].imagePath}
-                    alt={`Image ${index + 1}`}
-                    onClick={() => setShowButtonsIndex(index)}
-                />
-                {showButtonsIndex === index && (
-                    <div className="buttons-container">
-                        <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={() => handleDeleteImage(images[index].id)}
-                        >
-                            Delete
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={handleCancelDelete}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                )}
-            </div>
-        ) : (
-            <input
-                className="form-control mb-1"
-                type="file"
-                name={`image${index + 1}`}
-                id={`image${index + 1}`}
-                placeholder="Upload image"
-                onChange={(e) => handleFileChange(e, index)}
-            />
-        )}
-    </div>
-))}
+                            {[...Array(4)].map((_, index) => (
+                                <div key={index} className="col">
+                                    {index < images.length && images[index] ? (
+                                        <div className="image-container">
+                                            <img
+                                                className="w-25"
+                                                src={images[index].imagePath}
+                                                alt={`Image ${index + 1}`}
+                                                onClick={() => setShowButtonsIndex(index)}
+                                            />
+                                            {showButtonsIndex === index && (
+                                                <div className="buttons-container">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-danger"
+                                                        onClick={() => handleDeleteImage(images[index].id)}
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-secondary"
+                                                        onClick={handleCancelDelete}
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <input
+                                            className="form-control mb-1"
+                                            type="file"
+                                            name={`image${index + 1}`}
+                                            id={`image${index + 1}`}
+                                            placeholder="Upload image"
+                                        />
+                                    )}
+                                </div>
+                            ))}
                             {/* <div className="col">
 
                                 <input className="form-control mb-1" type="file" name="image1" id="image1" placeholder="Upload image" />

@@ -28,7 +28,7 @@ use App\Http\Controllers\UserController;
 
 // Example routes for ApartmentImageController
 // Route::post('/apartment_images', [ApartmentImageController::class, 'storeApartmentImages']);
-Route::get('/apartment_images/{user_id}/{id}', [ApartmentImageController::class, 'getImagePaths']);
+Route::get('/apartment_images/{id}', [ApartmentImageController::class, 'getImagePaths']);
 
 
 Route::get('/user-apartments/{user_id}/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);
@@ -57,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/delete/apartments/{apartment}', [ApartmentController::class, 'destroyApartment']);
     // Route::delete('/delete/apartments/images/{id}', [ApartmentController::class, 'destroyApartmentImages']);
     Route::delete('/delete/apartment-image/{id}', [ApartmentController::class, 'destroyApartmentImages']);
+    Route::post('/update/apartment-image/{id}', [ApartmentController::class, 'updateApartmentImages']);
     Route::get('/single-apartment/{apartmentId}', [ApartmentController::class, 'getApartmentById']);
 });
 

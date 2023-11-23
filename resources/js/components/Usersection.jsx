@@ -259,7 +259,7 @@ function UserSection() {
                                         <>
                                             <label>Full name:</label>
                                             <input className='form-control' type="text" name="full_name" id="" defaultValue={profileData.full_name} onChange={handleInputChange} />
-                                            <label>Proffesion:</label>
+                                            <label>Profession:</label>
                                             <input className='form-control' type="text" name="profession" id="" defaultValue={profileData.profession} onChange={handleInputChange} /><br />
                                             <label>Address:</label>
                                             <input className='form-control mb-4' type="text" name="address" id="" defaultValue={profileData.address} onChange={handleInputChange} />
@@ -300,7 +300,7 @@ function UserSection() {
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <i className="fa fa-globe fa-lg text-warning"></i>
                                         {editTrigger == true ?
-                                            <input type="text" className='form-control' defaultValue={profileData.website_link} onChange={handleInputChange} name="website_link" id='' />
+                                            <input type="url" className='form-control' defaultValue={profileData.website_link} onChange={handleInputChange} name="website_link" id='' />
                                             :
                                             <p className="mb-0">{userProfile?.profile?.website_link}</p>
                                         }
@@ -308,7 +308,7 @@ function UserSection() {
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <i className="fa fa-twitter fa-lg" style={{ color: '#55acee' }}></i>
                                         {editTrigger == true ?
-                                            <input defaultValue={profileData.twitter_link} onChange={handleInputChange} type="text" className='form-control' name="twitter_link" id="" />
+                                            <input defaultValue={profileData.twitter_link} onChange={handleInputChange} type="url" className='form-control' name="twitter_link" id="" />
                                             :
                                             <>
                                                 <p className="mb-0">{userProfile?.profile?.twitter_link}</p>
@@ -318,7 +318,7 @@ function UserSection() {
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <i className="fa fa-instagram fa-lg" style={{ color: '#ac2bac' }}></i>
                                         {editTrigger == true ?
-                                            <input type="text" defaultValue={profileData.instagram_link} onChange={handleInputChange} className='form-control' name="instagram_link" id="" />
+                                            <input type="url" defaultValue={profileData.instagram_link} onChange={handleInputChange} className='form-control' name="instagram_link" id="" />
                                             :
                                             <p className="mb-0">{userProfile?.profile?.instagram_link}</p>
                                         }
@@ -326,7 +326,7 @@ function UserSection() {
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                                         <i className="fa fa-facebook-f fa-lg" style={{ color: '#3b5998' }}></i>
                                         {editTrigger == true ?
-                                            <input type="text" defaultValue={profileData.facebook_link} onChange={handleInputChange} className='form-control' name="facebook_link" id="" />
+                                            <input type="url" defaultValue={profileData.facebook_link} onChange={handleInputChange} className='form-control' name="facebook_link" id="" />
                                             :
                                             <p className="mb-0">{userProfile?.profile?.facebook_link}</p>
                                         }
@@ -337,6 +337,8 @@ function UserSection() {
                     </div>
                     <div className="col-lg-8">
                         <div className="card mb-4">
+                    <h2 className="mt-5 text-center">View your Reservations</h2>
+              <p className="text-center">list of new resercations in Hostelator</p>
                             <div className="card-body">
                                 <div className="row">
                                     <div className="col-sm-4">
