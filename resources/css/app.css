@@ -102,3 +102,25 @@ main {
 .deleteTrigger{
    display: none;
 }
+.modals {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    z-index: 9999;
+    width: 70%;
+    max-height: 400px;
+    min-height: 500px;
+    border-radius: 12px;
+}
+.darkbg{
+    background-color: black;
+    opacity: 0.3;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}

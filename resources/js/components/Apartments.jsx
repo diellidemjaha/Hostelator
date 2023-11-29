@@ -5,11 +5,14 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import Footer from './Footer';
+import Reservation from './Reservation';
 
 function Apartments() {
     const [apartments, setApartments] = useState([])
     const [users, setUsers] = useState([])
     // const [error, setError] = useState(null);
+    const [modal, setModal] = useState(false)
+    const [dataToModal, setDataToModal] = useState([])
 
     useEffect(() => {
         async function fetchApartments() {
@@ -33,12 +36,25 @@ function Apartments() {
         fetchApartments();
         fetchUsers();
     }, []);
-console.log('users',users)
+    console.log('users', users)
+
+    function handleOpenModal(data) {
+        setModal(true);
+        setDataToModal(data)
+    }
+
     return (
         <div>
+            {modal == true ?
+                <Reservation data={dataToModal} />
+                :
+                ''
+            }
+
+
             <NavBar />
             <div className="container justify-content-center align-items-center">
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-sm-12">
                         <form className="d-flex justify-content-between align-items-center">
                             <div className="form-group">
@@ -67,9 +83,9 @@ console.log('users',users)
                             </div>
                         </form>
                     </div>
-                </div>
+                </div> */}
 
-                    {/* <div className="col-sm-4">
+                {/* <div className="col-sm-4">
                     <aside>
                     <h2 className="text-center">Navigate to:</h2>
                     <ul>
@@ -78,11 +94,11 @@ console.log('users',users)
                     <li>Register</li>
                     </ul>
                 </aside> */}
-                </div>
+            </div>
 
-                    <div className="d-flex justify-content-center align-items-center">
+            <div className="d-flex justify-content-center align-items-center">
                 <div className="row">
-                <div className="col-sm-9">
+                    <div className="col-sm-9">
 
                         <main>
                             <h2>Explore these recommended locations</h2>
@@ -93,22 +109,26 @@ console.log('users',users)
                                     <div className="card-body">
                                         <h5 className="card-title">{el?.title}</h5>
                                         <p className="card-text">
-                                        {el?.description}<br />
-                                        <p><b>Price:</b>{el?.price} €</p>
+                                            {el?.description}<br />
+                                            <p><b>Price:</b>{el?.price} €</p>
                                         </p>
-                                        <Link    to={`/SingleApartment/${el.id}`}><button type='submit' className="btn btn-primary float-end">Book now</button></Link>
+                                        {localStorage.getItem("user_id") == null ?
+                                            <Link to={`/SingleApartment/${el.id}`}><button className="btn btn-primary float-end">Book now</button></Link>
+                                            :
+                                            <button className="btn btn-primary float-end" onClick={() => handleOpenModal(el)}>Book now</button>
+                                        }
                                     </div>
                                     <img
-                                       src={el.first_image_path} alt={`Thumbnail for ${el.title}`} 
+                                        src={el.first_image_path} alt={`Thumbnail for ${el.title}`}
                                         className="card-img-bottom"
                                     />
 
-                                        <p class="card-text"><small class="text-muted">
+                                    <p class="card-text"><small class="text-muted">
                                         Posted by {el?.user?.name}
-                                            </small></p>
+                                    </small></p>
                                 </div>
-                                ))}
-                        {/* <div className="card m-4">
+                            ))}
+                            {/* <div className="card m-4">
                             <div className="card-body">
                             <h5 className="card-title">Apartment 2</h5>
                             <p className="card-text">
@@ -124,12 +144,12 @@ console.log('users',users)
                             alt="..."
                             />
                         </div> */}
-                    </main>
+                        </main>
                     </div>
                 </div>
             </div>
             <Footer />
-            </div>
+        </div>
 
     );
 }

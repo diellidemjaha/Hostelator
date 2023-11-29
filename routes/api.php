@@ -11,6 +11,7 @@ use App\Http\Controllers\UserApartmentsController;
 use App\Http\Controllers\UserApartmentController;
 use App\Http\Controllers\ApartmentImageController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,22 @@ use App\Http\Controllers\UserController;
 */
 
 
+// Public routes
+
+// ...
+
+// Authenticated routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Single reservation post/store
+    Route::post('/reservations', [ReservationController::class, 'store']);
+
+    // Display reservations based on user_id
+    Route::get('/reservations/user/{user_id}', [ReservationController::class, 'getUserReservations']);
+    Route::get('/reservations/owner/{owner}', [ReservationController::class, 'getOwnerReservations']);
+
+      // Edit reservation status
+      Route::put('/reservations/{apartmentId}', [ReservationController::class, 'editReservation']);
+});
 
 
 // Example routes for ApartmentImageController

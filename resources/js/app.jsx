@@ -9,7 +9,7 @@ import "../css/app.css"
 import SingleApartment from './components/SingleAppartment';
 import Apartments from './components/Apartments';
 import UpdateApartment from './components/UpdateApartment';
-
+import History from './components/History';
 
 
 function App() {
@@ -25,6 +25,7 @@ function App() {
                     <Route path="/Apartments/" element={<Apartments />} />
                     <Route path="/UpdateApartment/:apartmentId" element={<UpdateApartment />} />
                     <Route path="/logout" />
+                    <Route path="/History" element={<History/>} />
                 </Routes>
             </Router>
         </>

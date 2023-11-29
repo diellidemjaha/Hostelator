@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 
 import { useMapEvents } from 'react-leaflet';
+// import History from './History';
 
 
 function UserSection() {
@@ -157,6 +158,8 @@ function UserSection() {
         }
     };
     const [apartments, setApartments] = useState([])
+    const [reservations, setReservations] = useState([])
+    const [booking, setBooking] = useState([])
     // const getApartments = () => {
     //     axios.get(`api/user-apartments/${localStorage.getItem('user_id')}`).then(
     //         data => {
@@ -170,17 +173,36 @@ function UserSection() {
 
     useEffect(() => {
         async function fetchApartments() {
-          try {
-            const userId = localStorage.getItem('user_id');
-            const response = await axios.get(`/api/apartments/${userId}`); // Replace with your API endpoint
-            setApartments(response.data);
-          } catch (error) {
-            console.error('Error fetching apartments:', error);
-          }
+            try {
+                const userId = localStorage.getItem('user_id');
+                const response = await axios.get(`/api/apartments/${userId}`); // Replace with your API endpoint
+                setApartments(response.data);
+            } catch (error) {
+                console.error('Error fetching apartments:', error);
+            }
         }
-    
+        async function fetchOwnerReservations() {
+            try {
+                const userId = localStorage.getItem('user_id');
+                const response = await axios.get(`/api/reservations/owner/${userId}`); // Replace with your API endpoint
+                setReservations(response?.data?.ownerReservations);
+            } catch (error) {
+                console.error('Error fetching apartments:', error);
+            }
+        }
+        async function fetchUserReservations() {
+            try {
+                const userId = localStorage.getItem('user_id');
+                const response = await axios.get(`/api/reservations/user/${userId}`); // Replace with your API endpoint
+                setBooking(response.data.reservations)
+            } catch (error) {
+                console.error('Error fetching apartments:', error);
+            }
+        }
+        fetchUserReservations()
+        fetchOwnerReservations()
         fetchApartments();
-      }, []);
+    }, []);
 
     // console.log("aparamentet", apartments)
 
@@ -191,12 +213,12 @@ function UserSection() {
     //       setLongitude(lng);
     //     },
     //   });
-    
- 
+
+    console.log('reservations', booking)
     const handleAddApartment = async (e) => {
         e.preventDefault();
         const NewApartmentformData = new FormData();
-    
+
         // Append data to formData
         NewApartmentformData.append('user_id', localStorage.getItem('user_id'));
         NewApartmentformData.append('latitude', position[0]);
@@ -208,38 +230,52 @@ function UserSection() {
         NewApartmentformData.append('parking', e.target.parking.checked ? 1 : 0);
         NewApartmentformData.append('wi_fi', e.target.wi_fi.checked ? 1 : 0);
         NewApartmentformData.append('breakfast_included', e.target.breakfast.checked ? 1 : 0);
-    
+
         // Append image files to formData
         NewApartmentformData.append('image1', e.target.image1.files[0]);
         NewApartmentformData.append('image2', e.target.image2.files[0]);
         NewApartmentformData.append('image3', e.target.image3.files[0]);
         NewApartmentformData.append('image4', e.target.image4.files[0]);
-    
+
         try {
             const response = await axios.post('/api/apartments', NewApartmentformData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
-      
+
             if (response.status === 200) {
-              alert('Apartment and Images uploaded successfully');
+                alert('Apartment and Images uploaded successfully');
             } else {
-              console.error('Error creating apartment:', response.status);
+                console.error('Error creating apartment:', response.status);
             }
-          } catch (error) {
+        } catch (error) {
             console.error('Error creating apartment:', error);
-          }
+        }
     };
-    
-      
+
+
+    const handleReservation = (data,id) => {
+        console.log(data,id)
+        axios.put(`/api/reservations/${id}`,{status:data}).then(
+            data => {
+                console.log("data", data.data)
+            }
+        ).catch(
+            err => {
+                console.log(err)
+            }
+        )
+    }
+
+
     return (
         <section className='d-flex justify-content-center' style={{ backgroundColor: '#eee' }}>
-      <div className="container py-5 text-center">
-        <div className="row">
-          <div className="col-lg-4">
-            <div className="card mb-4">
-              <div className="card-body text-center">
+            <div className="container py-5 text-center">
+                <div className="row">
+                    <div className="col-lg-4">
+                        <div className="card mb-4">
+                            <div className="card-body text-center">
                                 <form onSubmit={handleSubmit} method="POST" encType="multipart/form-data">
                                     {editTrigger == true ?
                                         <>
@@ -272,9 +308,11 @@ function UserSection() {
                                         </>
                                     }
                                     <div className="d-flex justify-content-center mb-2">
+                                       <Link to="/History">
                                         <button type="button" className="btn btn-primary">
                                             My Earnings
                                         </button>
+                                        </Link> 
                                         {editTrigger == false ?
 
                                             <button onClick={() => setEditTrigger(!editTrigger)} type="button" className="btn btn-outline-primary ms-1">
@@ -337,54 +375,54 @@ function UserSection() {
                     </div>
                     <div className="col-lg-8">
                         <div className="card mb-4">
-                    <h2 className="mt-5 text-center">View your Reservations</h2>
-              <p className="text-center">list of new resercations in Hostelator</p>
+                            <h2 className="mt-5 text-center">View your Apartments Reservations</h2>
+                            <p className="text-center">list of new reservations in Hostelator</p>
                             <div className="card-body">
-                                <div className="row">
-                                    <div className="col-sm-4">
-                                        <p className="mb-0">A new reservation for your apartment from:</p>
-                                    </div>
-                                    <div className="col-sm-4">
-                                        <p className="mb-0">Johnatan Smith</p>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <p className="btn btn-primary btn-sm">Approve</p>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <p className="btn btn-default btn-sm">Decline</p>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="row">
-                                    <div className="col-sm-4">
-                                        <p className="mb-0">A new reservation for your apartment:</p>
-                                    </div>
-                                    <div className="col-sm-4">
-                                        <p className="mb-0">Johnatan Smith</p>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <p className="btn btn-primary btn-sm">Approve</p>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <p className="btn btn-default btn-sm">Decline</p>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="row">
-                                    <div className="col-sm-4">
-                                        <p className="mb-0">A new reservation for your apartment from:</p>
-                                    </div>
-                                    <div className="col-sm-4">
-                                        <p className="mb-0">Johnatan Smith</p>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <p className="btn btn-primary btn-sm">Approve</p>
-                                    </div>
-                                    <div className="col-sm-2">
-                                        <p className="btn btn-default btn-sm">Decline</p>
-                                    </div>
-                                </div>
-                                <hr />
+                                {reservations?.map(el => {
+                                    return (
+                                        <>
+                                            <div className="row">
+                                                <div className="col-sm-4">
+                                                    <p className="mb-0">A new reservation</p>
+                                                </div>
+                                                <div className="col-sm-4">
+                                                    <p className="mb-0">{el?.name}</p>
+                                                </div>
+                                                <div className="col-sm-2">
+                                                    <p className="btn btn-success btn-sm" onClick={()=> handleReservation(2 , el?.apartment_id)}>Approve</p>
+                                                </div>
+                                                <div className="col-sm-2">
+                                                    <p className="btn btn-danger btn-sm" onClick={()=> handleReservation(3 , el?.apartment_id)}>Decline</p>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                        </>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                        <div className="card mb-4">
+                            <h2 className="mt-5 text-center">View your Bookings</h2>
+                            <p className="text-center">list of your bookings in Hostelator</p>
+                            <div className="card-body">
+                                {booking?.map(el => {
+                                    return (
+                                        <>
+                                            <div className="row">
+                                                <div className="col-sm-4">
+                                                    <p className="mb-0">A new reservation</p>
+                                                </div>
+                                                <div className="col-sm-4">
+                                                    <p className="mb-0">{el?.name}</p>
+                                                </div>
+                                                <div className="col-sm-3">
+                                                    {el.status == 1 ? <p className='text-muted'>Pending</p> : el.status == 2 ? <p className='text-success'>Approved</p> : <p className='text-danger'>Canceled</p>}
+                                                </div>
+                                            </div>
+                                            <hr />
+                                        </>
+                                    )
+                                })}
                             </div>
                         </div>
 
@@ -407,7 +445,7 @@ function UserSection() {
 
                                 </div>
 
-                                <input className="form-control mb-1" name='title' id='title' type="text" placeholder="Apartment title" aria-label="default input example"  required/>
+                                <input className="form-control mb-1" name='title' id='title' type="text" placeholder="Apartment title" aria-label="default input example" required />
                                 <textarea required className="form-control mb-1" name='description' id='description' type="text" placeholder="Type the description" aria-label="default input example" />
                                 <p>Price per Night:</p>
                                 <input required type="number" name='price' id='price' className="form-control mb-1" min="0" placeholder="50.00" step="0.01" />
@@ -420,11 +458,11 @@ function UserSection() {
                                                 <input required className="form-control mb-1" type="file" name="image1" id="image1" placeholder="Upload image" />
                                             </div>
                                             <div class="col">
-                                                <input className="form-control mb-1" type="file"name='image2' id="image2" placeholder="Upload image" />
+                                                <input className="form-control mb-1" type="file" name='image2' id="image2" placeholder="Upload image" />
                                             </div>
                                             <div class="w-100"></div>
                                             <div class="col">
-                                                <input className="form-control mb-1" type="file"name='image3' id="image3" placeholder="Upload image" />
+                                                <input className="form-control mb-1" type="file" name='image3' id="image3" placeholder="Upload image" />
                                             </div>
                                             <div class="col">
                                                 <input className="form-control mb-1" type="file" name='image4' id="image4" placeholder="Upload image" />
@@ -463,27 +501,27 @@ function UserSection() {
 
 
                     <div className="container">
-            <div className="row">
-              <h2 className="mt-5 text-center">View your Apartments</h2>
-              <p className="text-center">list of all your apartments listed in Hostelator</p>
-              {apartments.map((el) => (
-                <div className="col-12 col-md-6 col-lg-4" key={el.id}>
-                  <div className="card m-4" style={{ width: '18rem' }}>
-                    <img src={el.first_image_path} alt={`Thumbnail for ${el.title}`} className="card-img-top" />
-                    <div className="card-body">
-                      <h5 className="card-title">{el.title}</h5>
-                      <p className="card-text">{el.price} €</p>
-                      <Link to={`/UpdateApartment/${el?.id}`} className="btn btn-primary float-end">View Listing</Link>
+                        <div className="row">
+                            <h2 className="mt-5 text-center">View your Apartments</h2>
+                            <p className="text-center">list of all your apartments listed in Hostelator</p>
+                            {apartments.map((el) => (
+                                <div className="col-12 col-md-6 col-lg-4" key={el.id}>
+                                    <div className="card m-4" style={{ width: '18rem' }}>
+                                        <img src={el.first_image_path} alt={`Thumbnail for ${el.title}`} className="card-img-top" />
+                                        <div className="card-body">
+                                            <h5 className="card-title">{el.title}</h5>
+                                            <p className="card-text">{el.price} €</p>
+                                            <Link to={`/UpdateApartment/${el?.id}`} className="btn btn-primary float-end">View Listing</Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                  </div>
                 </div>
-              ))}
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }
 
 
