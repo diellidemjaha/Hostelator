@@ -3,7 +3,10 @@ import axios from "axios";
 import { format, addDays, differenceInDays } from 'date-fns';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from 'react-router-dom';
+
 const Reservation = (props) => {
+    const navigate = useNavigate();
     const [allBooking, setAllBooking] = useState([]);
     const [numberOfDays, setNumberOfDays] = useState(0);
     const [minSelectableDate, setMinSelectableDate] = useState(new Date());
@@ -62,6 +65,7 @@ const Reservation = (props) => {
                 alert('Reservation success');
                 // After successful reservation, update the reservations
                 getReservations();
+                navigate('/');
             })
             .catch(err => {
                 console.log(err);
@@ -128,11 +132,11 @@ const Reservation = (props) => {
                                 />
                             </div>
                             <div className="d-flex justify-content-center mt-2">
-                                Total Price: {numberOfDays * props.data.price}
+                                Total Price: <b>{numberOfDays * props.data.price} €</b>
                             </div>
                             <div className="d-flex justify-content-center mt-2">
 
-                                Price per day: {props.data.price}
+                                Price per day:<b> {props.data.price} €</b>
                             </div>
                             <div className="d-flex justify-content-center mt-2">
                                 <button className="btn btn-primary mt-2" type="submit">Book the Apartment</button>

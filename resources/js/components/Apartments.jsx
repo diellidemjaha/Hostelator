@@ -107,7 +107,7 @@ function Apartments() {
                                 <div className="card m-2" key={el.id}>
                                     {/* <div className="card m-4"> */}
                                     <div className="card-body">
-                                        <h5 className="card-title">{el?.title}</h5>
+                                        <h5 className="card-title"> <Link to={`/SingleApartment/${el.id}`}>{el?.title}</Link></h5>
                                         <p className="card-text">
                                             {el?.description}<br />
                                             <p><b>Price:</b>{el?.price} €</p>

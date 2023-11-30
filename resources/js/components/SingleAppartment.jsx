@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
+import Reservation from "./Reservation";
 
 
 function SingleApartment() {
@@ -12,6 +13,9 @@ function SingleApartment() {
   const [apartments, setApartments] = useState([])
   const [imagePaths, setImagePaths] = useState([]);
   const [position, setPosition] = useState([42.6629, 21.1655]); 
+  const [modal, setModal] = useState(false)
+  const [users, setUsers] = useState([])
+  const [dataToModal, setDataToModal] = useState([])
 
   const getApartments = () => {
     axios.get(`/api/user-apartments/${localStorage.getItem('user_id')}/${id}`).then(
@@ -41,13 +45,25 @@ function SingleApartment() {
         console.error('Error fetching location:', error);
       });
   }
+
+  async function fetchUsers() {
+    try {
+        const response = await axios.get(`/api/user-names`);
+        setUsers(response.data.names);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
   
   useEffect(() => {
     getApartments();
     getApartmentImages();
     getApartmentLocation();
+    fetchUsers();
   }, [])
-
+  function handleOpenModal(data) {
+    setModal(true);
+    setDataToModal(data) }
   // console.log("aparamentet", apartments)
   // console.log("id", id)
 
@@ -55,6 +71,11 @@ function SingleApartment() {
   return (
 
     <>
+    {modal == true ?
+                <Reservation data={dataToModal} />
+                :
+                ''
+            }
     <NavBar />
       <section style={{ backgroundColor: '#eee' }}>
         <center>
@@ -129,8 +150,12 @@ function SingleApartment() {
                       <div id="calendar"></div>
                     </div>
                   </div>
-                  <button className="btn btn-md btn-primary float-end">Book Now !</button>
-                </li>
+                  {/* <button className="btn btn-md btn-primary float-end">Book Now !</button> */}
+                  {/* {users.map((el) => ( */}
+                  {/* <button className="btn btn-primary float-end" onClick={() => handleOpenModal(el)}>Book now</button> */}
+                  <button className="btn btn-primary float-end" onClick={() => handleOpenModal(users[0])}>Book now</button>
+                  </li>
+                  
               </ul>
             </div>
           </div>

@@ -255,11 +255,12 @@ function UserSection() {
     };
 
 
-    const handleReservation = (data,id) => {
-        console.log(data,id)
-        axios.put(`/api/reservations/${id}`,{status:data}).then(
+    const handleReservation = (data, id) => {
+        console.log(data, id)
+        axios.put(`/api/reservations/${id}`, { status: data }).then(
             data => {
                 console.log("data", data.data)
+                window.location.href = `/`;
             }
         ).catch(
             err => {
@@ -308,11 +309,11 @@ function UserSection() {
                                         </>
                                     }
                                     <div className="d-flex justify-content-center mb-2">
-                                       <Link to="/History">
-                                        <button type="button" className="btn btn-primary">
-                                            My Earnings
-                                        </button>
-                                        </Link> 
+                                        <Link to="/History">
+                                            <button type="button" className="btn btn-primary">
+                                                My Earnings
+                                            </button>
+                                        </Link>
                                         {editTrigger == false ?
 
                                             <button onClick={() => setEditTrigger(!editTrigger)} type="button" className="btn btn-outline-primary ms-1">
@@ -378,10 +379,11 @@ function UserSection() {
                             <h2 className="mt-5 text-center">View your Apartments Reservations</h2>
                             <p className="text-center">list of new reservations in Hostelator</p>
                             <div className="card-body">
-                                {reservations?.map(el => {
-                                    return (
+                                {reservations
+                                    .filter((el) => el.status !== 2 && el.status !== 3)
+                                    .map((el) => (
                                         <>
-                                            <div className="row">
+                                            <div className="row" key={el.id}>
                                                 <div className="col-sm-4">
                                                     <p className="mb-0">A new reservation</p>
                                                 </div>
@@ -389,16 +391,19 @@ function UserSection() {
                                                     <p className="mb-0">{el?.name}</p>
                                                 </div>
                                                 <div className="col-sm-2">
-                                                    <p className="btn btn-success btn-sm" onClick={()=> handleReservation(2 , el?.apartment_id)}>Approve</p>
+                                                    <p className="btn btn-success btn-sm" onClick={() => handleReservation(2, el?.apartment_id)}>
+                                                        Approve
+                                                    </p>
                                                 </div>
                                                 <div className="col-sm-2">
-                                                    <p className="btn btn-danger btn-sm" onClick={()=> handleReservation(3 , el?.apartment_id)}>Decline</p>
+                                                    <p className="btn btn-danger btn-sm" onClick={() => handleReservation(3, el?.apartment_id)}>
+                                                        Decline
+                                                    </p>
                                                 </div>
                                             </div>
                                             <hr />
                                         </>
-                                    )
-                                })}
+                                    ))}
                             </div>
                         </div>
                         <div className="card mb-4">
