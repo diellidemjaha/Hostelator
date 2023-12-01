@@ -51,7 +51,7 @@ Ensure you have the following installed:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/hostelator.git
+    git clone https://github.com/diellidemjaha/hostelator.git
     ```
 
 2. Navigate to the project directory:
@@ -105,6 +105,7 @@ Hostelator should now be running locally at `http://localhost:8000`.
 The application uses several tables to store essential information. You can find the table structures in the migration files. Some key tables include:
 
 - `users`: Stores user information.
+- `edit_user_profile`: Stores the updates on the user's profile.
 - `apartments`: Contains details about posted apartments.
 - `apartment_images`: Manages images associated with each apartment.
 - `reservations`: Handles reservation information, including dates and prices.
