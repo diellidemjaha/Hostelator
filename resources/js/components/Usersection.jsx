@@ -3,16 +3,37 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
-
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 import { useMapEvents } from 'react-leaflet';
 // import History from './History';
 
 
 function UserSection() {
     // Fetch user_id into local storage
+    const navigate = useNavigate();
     const [userProfile, setUserProfile] = useState(null);
     const [error, setError] = useState(null);
     const [position, setPosition] = useState([0, 0]);
+    
+    
+    const [bookingsPage, setBookingsPage] = useState(0);
+    const [reservationsPage, setReservationsPage] = useState(0);
+    const bookingsPerPage = 5;
+    const reservationsPerPage = 5;
+    
+    const handleBookingsPageChange = ({ selected }) => {
+        setBookingsPage(selected);
+    };
+    
+    const handleReservationsPageChange = ({ selected }) => {
+        setReservationsPage(selected);
+    };
+    
+    
+    
+    
     function SetMarker({ position, setPosition }) {
         const map = useMapEvents({
             click(e) {
@@ -20,56 +41,56 @@ function UserSection() {
                 setPosition([lat, lng]);
             },
         });
-
+        
         return position[0] !== 0 && position[1] !== 0 ? (
             <Marker position={position}>
                 <Popup>Apartment Location</Popup>
             </Marker>
         ) : null;
     }
-
+    
     // useEffect(() => {
-    //     // Use a callback to set userId after retrieving it from local storage
-    //     const userId = localStorage.getItem('user_id');
-    //     console.log('user_id', userId);
-    //     setUserId(userId);
-    // }, []); // Empty dependency array ensures this runs only once
-
-    //display user profile
-    const fetchUserProfile = async () => {
-        try {
-            // const response = await axios.get(`/api/profile/${ localStorage.getItem('user_id')}`); // Replace with the correct API endpoint
-            const response = await axios.get(`/api/profile`); // Replace with the correct API endpoint
+        //     // Use a callback to set userId after retrieving it from local storage
+        //     const userId = localStorage.getItem('user_id');
+        //     console.log('user_id', userId);
+        //     setUserId(userId);
+        // }, []); // Empty dependency array ensures this runs only once
+        
+        //display user profile
+        const fetchUserProfile = async () => {
+            try {
+                // const response = await axios.get(`/api/profile/${ localStorage.getItem('user_id')}`); // Replace with the correct API endpoint
+                const response = await axios.get(`/api/profile`); // Replace with the correct API endpoint
 
             if (response.status === 200) {
                 // const userData = response.data.user;
-
+                
                 setUserProfile(response.data.user);
                 console.log(response.data.user)
                 // setProfileData({
-                //     profile_pic: userData?.profile_pic_path,
-                //     full_name: userData?.full_name,
-                //     profession: userData?.profession,
-                //     website_link: userData?.website_link,
-                //     twitter_link: userData?.twitter_link,
-                //     instagram_link: userData?.instagram_link,
-                //     facebook_link: userData?.facebook_link,
-                // });
+                    //     profile_pic: userData?.profile_pic_path,
+                    //     full_name: userData?.full_name,
+                    //     profession: userData?.profession,
+                    //     website_link: userData?.website_link,
+                    //     twitter_link: userData?.twitter_link,
+                    //     instagram_link: userData?.instagram_link,
+                    //     facebook_link: userData?.facebook_link,
+                    // });
 
-                //         }
+                    //         }
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+                console.error('An error occurred while fetching the profile.');
             }
-        } catch (error) {
-            console.error('Error fetching profile:', error);
-            console.error('An error occurred while fetching the profile.');
-        }
-    };
-
-    // Call the fetchUserProfile function when the component mounts
-    useEffect(() => {
-        fetchUserProfile();
+        };
+        
+        // Call the fetchUserProfile function when the component mounts
+        useEffect(() => {
+            fetchUserProfile();
     }, [])// Empty dependency array ensures the effect runs only once after mounting
 
-
+    
     //Update profile code below
     const [editTrigger, setEditTrigger] = useState(false);
     const [profileData, setProfileData] = useState({
@@ -82,8 +103,8 @@ function UserSection() {
         facebook_link: '',
         profile_pic: null,
     });
-
-
+    
+    
     // Function to handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -92,7 +113,7 @@ function UserSection() {
             [name]: value,
         }));
     };
-
+    
     // Function to handle file input changes
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -101,55 +122,62 @@ function UserSection() {
     // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        
         // if (!userProfile) {
-        //     // Handle the case when userProfile is null
-        //     console.error('User profile is null.');
+            //     // Handle the case when userProfile is null
+            //     console.error('User profile is null.');
+            
+            //     return;
+            // }
+            
 
-        //     return;
-        // }
-
-
-        const formData = new FormData();
-        formData.append('id', userProfile?.profile?.id);
-        // formData.append('user_id', 1);
-        formData.append('full_name', profileData.full_name);
-        formData.append('profession', profileData.profession);
-        formData.append('address', profileData.address);
-        formData.append('website_link', profileData?.website_link);
-        formData.append('twitter_link', profileData.twitter_link);
-        formData.append('instagram_link', profileData.instagram_link);
-        formData.append('facebook_link', profileData.facebook_link);
-        formData.append('profile_pic', profileData.profile_pic);
-
-
-        try {
-            const response = await axios.post(`/api/update-profile/${userProfile?.profile?.id}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            if (response.status === 200) {
-                console.log(response);
-                // Handle success
-                // console.log('Profile updated successfully:', response.data.message);
-                // // console.log(profileData.user_id);
-                // console.log('user-profile-info', response.data.user_id);
-                console.log('res', response);
-
-                // Call fetchUserProfile to update the user profile data on the page
-                fetchUserProfile();
-
-            } else {
-                // Handle other HTTP status codes
+            const formData = new FormData();
+            formData.append('id', userProfile?.profile?.id);
+            // formData.append('user_id', 1);
+            formData.append('full_name', profileData.full_name);
+            formData.append('profession', profileData.profession);
+            formData.append('address', profileData.address);
+            formData.append('website_link', profileData?.website_link);
+            formData.append('twitter_link', profileData.twitter_link);
+            formData.append('instagram_link', profileData.instagram_link);
+            formData.append('facebook_link', profileData.facebook_link);
+            formData.append('profile_pic', profileData.profile_pic);
+            
+            
+            try {
+                const response = await axios.post(`/api/update-profile/${userProfile?.profile?.id}`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                
+                if (response.status === 200) {
+                    console.log(response);
+                    Swal.fire('Profile updated succesfully!');
+                    // Handle success
+                    // console.log('Profile updated successfully:', response.data.message);
+                    // // console.log(profileData.user_id);
+                    // console.log('user-profile-info', response.data.user_id);
+                    console.log('res', response);
+                    
+                    // Call fetchUserProfile to update the user profile data on the page
+                    fetchUserProfile();
+                    navigate('/');
+                    
+                } else {
+                    // Handle other HTTP status codes
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error updating the profile!",
+                });
                 console.error('Error updating profile:', response.status);
                 console.error('Profile update failed. Please try again later.');
             }
 
             // Toggle the edit mode off
             setEditTrigger(false);
-
+            
             // Handle other success actions as needed
         } catch (error) {
             // Handle network or other errors
@@ -161,17 +189,17 @@ function UserSection() {
     const [reservations, setReservations] = useState([])
     const [booking, setBooking] = useState([])
     // const getApartments = () => {
-    //     axios.get(`api/user-apartments/${localStorage.getItem('user_id')}`).then(
-    //         data => {
-    //             setApartments(data?.data?.apartments)
-    //         }
-    //     )
-    // }
-    // useEffect(() => {
-    //     getApartments();
-    // }, [])
-
-    useEffect(() => {
+        //     axios.get(`api/user-apartments/${localStorage.getItem('user_id')}`).then(
+            //         data => {
+                //             setApartments(data?.data?.apartments)
+                //         }
+                //     )
+                // }
+                // useEffect(() => {
+                    //     getApartments();
+                    // }, [])
+                    
+                    useEffect(() => {
         async function fetchApartments() {
             try {
                 const userId = localStorage.getItem('user_id');
@@ -203,50 +231,57 @@ function UserSection() {
         fetchOwnerReservations()
         fetchApartments();
     }, []);
-
+    
     // console.log("aparamentet", apartments)
-
+    
     // const map = useMapEvents({
-    //     click: (e) => {
-    //       const { lat, lng } = e.latlng;
-    //       setLatitude(lat);
-    //       setLongitude(lng);
-    //     },
-    //   });
-
-    console.log('reservations', booking)
-    const handleAddApartment = async (e) => {
-        e.preventDefault();
-        const NewApartmentformData = new FormData();
-
-        // Append data to formData
-        NewApartmentformData.append('user_id', localStorage.getItem('user_id'));
-        NewApartmentformData.append('latitude', position[0]);
-        NewApartmentformData.append('longitude', position[1]);
-        NewApartmentformData.append('title', e.target.title.value);
-        NewApartmentformData.append('description', e.target.description.value);
-        NewApartmentformData.append('price', e.target.price.value);
-        NewApartmentformData.append('address', 'coming soon');
-        NewApartmentformData.append('parking', e.target.parking.checked ? 1 : 0);
-        NewApartmentformData.append('wi_fi', e.target.wi_fi.checked ? 1 : 0);
-        NewApartmentformData.append('breakfast_included', e.target.breakfast.checked ? 1 : 0);
-
-        // Append image files to formData
-        NewApartmentformData.append('image1', e.target.image1.files[0]);
-        NewApartmentformData.append('image2', e.target.image2.files[0]);
-        NewApartmentformData.append('image3', e.target.image3.files[0]);
-        NewApartmentformData.append('image4', e.target.image4.files[0]);
-
-        try {
-            const response = await axios.post('/api/apartments', NewApartmentformData, {
+        //     click: (e) => {
+            //       const { lat, lng } = e.latlng;
+            //       setLatitude(lat);
+            //       setLongitude(lng);
+            //     },
+            //   });
+            
+            console.log('reservations', booking)
+            const handleAddApartment = async (e) => {
+                e.preventDefault();
+                const NewApartmentformData = new FormData();
+                
+                // Append data to formData
+                NewApartmentformData.append('user_id', localStorage.getItem('user_id'));
+                NewApartmentformData.append('latitude', position[0]);
+                NewApartmentformData.append('longitude', position[1]);
+                NewApartmentformData.append('title', e.target.title.value);
+                NewApartmentformData.append('description', e.target.description.value);
+                NewApartmentformData.append('price', e.target.price.value);
+                NewApartmentformData.append('address', e?.target?.address?.value);
+                NewApartmentformData.append('parking', e.target.parking.checked ? 1 : 0);
+                NewApartmentformData.append('wi_fi', e.target.wi_fi.checked ? 1 : 0);
+                NewApartmentformData.append('breakfast_included', e.target.breakfast.checked ? 1 : 0);
+                
+                // Append image files to formData
+                NewApartmentformData.append('image1', e.target.image1.files[0]);
+                NewApartmentformData.append('image2', e.target.image2.files[0]);
+                NewApartmentformData.append('image3', e.target.image3.files[0]);
+                NewApartmentformData.append('image4', e.target.image4.files[0]);
+                
+                try {
+                    const response = await axios.post('/api/apartments', NewApartmentformData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
+            
             if (response.status === 200) {
-                alert('Apartment and Images uploaded successfully');
+                // alert('Apartment and Images uploaded successfully');
+                Swal.fire('Apartment and Images uploaded successfully!');
+                navigate('/');
             } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error creating the apartment!",
+                });
                 console.error('Error creating apartment:', response.status);
             }
         } catch (error) {
@@ -262,16 +297,18 @@ function UserSection() {
                 console.log("data", data.data)
                 window.location.href = `/`;
             }
-        ).catch(
-            err => {
-                console.log(err)
+            ).catch(
+                err => {
+                    console.log(err)
+                }
+                )
             }
-        )
-    }
-
-
-    return (
-        <section className='d-flex justify-content-center' style={{ backgroundColor: '#eee' }}>
+            
+            
+            const bookingsSlice = booking.slice(bookingsPage * bookingsPerPage, (bookingsPage + 1) * bookingsPerPage);
+            const reservationsSlice = reservations.slice(reservationsPage * reservationsPerPage, (reservationsPage + 1) * reservationsPerPage);
+            return (
+                <section className='d-flex justify-content-center' style={{ backgroundColor: '#eee' }}>
             <div className="container py-5 text-center">
                 <div className="row">
                     <div className="col-lg-4">
@@ -284,14 +321,14 @@ function UserSection() {
                                             <input type="file" name="profile_pic" onChange={handleFileChange} />
                                         </>
                                         :
-
+                                        
                                         <img
-                                            alt="avatar"
-                                            src={`storage/${userProfile?.profile?.profile_pic_path}`}
+                                        alt="avatar"
+                                        src={`storage/${userProfile?.profile?.profile_pic_path}`}
                                             className="rounded-circle img-fluid"
                                             style={{ width: '150px' }}
-                                        />
-                                    }
+                                            />
+                                        }
                                     {editTrigger == true ?
                                         <>
                                             <label>Full name:</label>
@@ -299,7 +336,7 @@ function UserSection() {
                                             <label>Profession:</label>
                                             <input className='form-control' type="text" name="profession" id="" defaultValue={profileData.profession} onChange={handleInputChange} /><br />
                                             <label>Address:</label>
-                                            <input className='form-control mb-4' type="text" name="address" id="" defaultValue={profileData.address} onChange={handleInputChange} />
+                                            <input className='form-control mb-4' type="text" name="address" id="address" defaultValue={profileData.address} onChange={handleInputChange} />
                                         </>
                                         :
                                         <>
@@ -316,7 +353,7 @@ function UserSection() {
                                         </Link>
                                         {editTrigger == false ?
 
-                                            <button onClick={() => setEditTrigger(!editTrigger)} type="button" className="btn btn-outline-primary ms-1">
+<button onClick={() => setEditTrigger(!editTrigger)} type="button" className="btn btn-outline-primary ms-1">
                                                 Edit Profile
                                             </button>
                                             :
@@ -379,7 +416,7 @@ function UserSection() {
                             <h2 className="mt-5 text-center">View your Apartments Reservations</h2>
                             <p className="text-center">list of new reservations in Hostelator</p>
                             <div className="card-body">
-                                {reservations
+                                {reservationsSlice
                                     .filter((el) => el.status !== 2 && el.status !== 3)
                                     .map((el) => (
                                         <>
@@ -391,12 +428,12 @@ function UserSection() {
                                                     <p className="mb-0">{el?.name}</p>
                                                 </div>
                                                 <div className="col-sm-2">
-                                                    <p className="btn btn-success btn-sm" onClick={() => handleReservation(2, el?.apartment_id)}>
+                                                    <p className="btn btn-success btn-sm" onClick={() => handleReservation(2, el?.id)}>
                                                         Approve
                                                     </p>
                                                 </div>
                                                 <div className="col-sm-2">
-                                                    <p className="btn btn-danger btn-sm" onClick={() => handleReservation(3, el?.apartment_id)}>
+                                                    <p className="btn btn-danger btn-sm" onClick={() => handleReservation(3, el?.id)}>
                                                         Decline
                                                     </p>
                                                 </div>
@@ -405,12 +442,23 @@ function UserSection() {
                                         </>
                                     ))}
                             </div>
+                            <ReactPaginate
+                                previousLabel={'previous'}
+                                nextLabel={'next'}
+                                breakLabel={'...'}
+                                pageCount={Math.ceil(reservations.length / reservationsPerPage)}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={handleReservationsPageChange}
+                                containerClassName={'pagination justify-content-center'}
+                                activeClassName={'active'}
+                            />
                         </div>
                         <div className="card mb-4">
                             <h2 className="mt-5 text-center">View your Bookings</h2>
                             <p className="text-center">list of your bookings in Hostelator</p>
                             <div className="card-body">
-                                {booking?.map(el => {
+                                {bookingsSlice?.map(el => {
                                     return (
                                         <>
                                             <div className="row">
@@ -429,6 +477,17 @@ function UserSection() {
                                     )
                                 })}
                             </div>
+                            <ReactPaginate
+                                previousLabel={'previous'}
+                                nextLabel={'next'}
+                                breakLabel={'...'}
+                                pageCount={Math.ceil(booking.length / bookingsPerPage)}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={handleBookingsPageChange}
+                                containerClassName={'pagination justify-content-center'}
+                                activeClassName={'active'}
+                            />
                         </div>
 
                         <div className="col-sm-9 text-center mt-8">
@@ -481,6 +540,12 @@ function UserSection() {
                                         Parking available
                                     </label>
                                 </div>
+                                {/* <div className="form-check">
+                                    <input className="form-control" type="text" name='address' id='address'></input>
+                                    <label className="form-check-label" htmlFor="flexCheckParking">
+                                        Address
+                                    </label>
+                                </div> */}
 
                                 <div className="form-check">
                                     <input className="form-check-input" type="checkbox" value="" name='wi_fi' id='wi_fi'></input>

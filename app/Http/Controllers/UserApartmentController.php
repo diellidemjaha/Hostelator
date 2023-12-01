@@ -7,17 +7,20 @@ use App\Models\Apartment;
 
 class UserApartmentController extends Controller
 {
-    public function ApartmentById($user_id, $apartment_id)
+    public function ApartmentById($apartment_id)
     {
-        // Retrieve the apartment owned by the user with the given user_id and apartment_id
-        $apartment = Apartment::where('user_id', $user_id)
-            ->where('id', $apartment_id)
-            ->first();
-
-        if (!$apartment) {
+        try {
+            // Retrieve the apartment with the given apartment_id
+            $apartment = Apartment::where('id', $apartment_id)
+                ->firstOrFail();
+    
+            return response()->json([
+                'apartment' => $apartment,
+                'user_id' => $apartment->user_id,
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Catch the exception for no results and return a custom error message
             return response()->json(['error' => 'Apartment not found'], 404);
         }
-
-        return response()->json(['apartment' => $apartment]);
     }
 }

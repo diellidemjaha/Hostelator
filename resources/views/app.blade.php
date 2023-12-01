@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Hostelator</title>
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/react-paginate/7.0.0/react-paginate.css"
+/>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

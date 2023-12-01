@@ -113,7 +113,7 @@ function Apartments() {
                                             <p><b>Price:</b>{el?.price} €</p>
                                         </p>
                                         {localStorage.getItem("user_id") == null ?
-                                            <Link to={`/SingleApartment/${el.id}`}><button className="btn btn-primary float-end">Book now</button></Link>
+                                            <Link to={`/SingleApartment/${el?.id}`}><button className="btn btn-primary float-end">Book now</button></Link>
                                             :
                                             <button className="btn btn-primary float-end" onClick={() => handleOpenModal(el)}>Book now</button>
                                         }

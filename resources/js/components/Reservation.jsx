@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { format, addDays, differenceInDays } from 'date-fns';
+import { format, addDays, differenceInDays, startOfDay } from 'date-fns';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Reservation = (props) => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Reservation = (props) => {
     });
 
     const getReservations = () => {
-        axios.get(`/api/reservations/owner/${props.data.user.id}`)
+        axios.get(`/api/reservations/owner/${props?.data?.user_id}`)
             .then(data => {
                 console.log(data.data);
                 setAllBooking(data.data.ownerReservations.filter(el => el?.apartment_id === props.data.id));
@@ -33,7 +34,7 @@ const Reservation = (props) => {
 
     useEffect(() => {
         getReservations();
-    }, [props.data.id, props.data.user.id]);
+    }, [props?.data?.id, props?.data?.id]);
     useEffect(() => {
         // Calculate the number of days between start and end dates
         const days = differenceInDays(selectedDate.endDate, selectedDate.startDate);
@@ -42,6 +43,8 @@ const Reservation = (props) => {
 
     }, [selectedDate, props.data.price]);
 
+
+    console.log("props.data", props?.data)
     const handleReservation = (e) => {
         e.preventDefault();
 
@@ -62,7 +65,8 @@ const Reservation = (props) => {
 
         axios.post(`/api/reservations`, payload)
             .then(data => {
-                alert('Reservation success');
+                // alert('Reservation success');
+                Swal.fire("Apartment reservation sent!");
                 // After successful reservation, update the reservations
                 getReservations();
                 navigate('/');

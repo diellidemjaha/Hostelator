@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMapEvents } from 'react-leaflet';
+import Swal from 'sweetalert2';
 
 function UpdateApartment() {
     const { apartmentId } = useParams();
@@ -103,7 +104,8 @@ function UpdateApartment() {
             if (response.status === 200) {
                 axios.post(`/api/update/apartment-image/${apartmentId}`, updatedApartmentData).then(
                     data => {
-                        alert('Apartment and Images updated successfully');
+                        // alert('Apartment and Images updated successfully');
+                        Swal.fire("Apartment and Images updated successfully!");
                         navigate('/');
                     }
                 ).catch(
@@ -112,6 +114,11 @@ function UpdateApartment() {
                     }
                 )
             } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error updating the apartment!",
+                  });
                 console.error('Error updating apartment:', response.status);
             }
         } catch (error) {
@@ -126,9 +133,15 @@ function UpdateApartment() {
             const response = await axios.delete(`/api/delete/apartments/${apartmentId}`);
 
             if (response.status === 200) {
-                alert('Apartment deleted successfully');
+                // alert('Apartment deleted successfully');
+                Swal.fire('Apartment deleted successfully');
                 navigate('/');
             } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error deleting the apartment!",
+                  });
                 console.error('Error deleting apartment:', response.status);
             }
         } catch (error) {

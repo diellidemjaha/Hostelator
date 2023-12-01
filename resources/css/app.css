@@ -124,3 +124,22 @@ main {
     right: 0;
     z-index: 99;
 }
+.pagination a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    color: black;
+    background-color: #e1e5ee;
+    text-decoration: none;
+  }
+  
+  .pagination a:hover {
+    background-color: rgb(126, 83, 167);
+  }
+  
+  .pagination .active a {
+    background-color:blueviolet ;
+    color: #fff;
+    border-color: blueviolet;
+  }
+  

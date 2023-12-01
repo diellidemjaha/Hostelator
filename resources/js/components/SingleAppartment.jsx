@@ -17,13 +17,21 @@ function SingleApartment() {
   const [users, setUsers] = useState([])
   const [dataToModal, setDataToModal] = useState([])
 
+  // const getApartments = () => {
+  //   axios.get(`/api/user-apartments/${localStorage.getItem('user_id')}/${id}`).then(
+  //     data => {
+  //       setApartments(data?.data?.apartment)
+  //     }
+  //     )
+  //   }
+
   const getApartments = () => {
-    axios.get(`/api/user-apartments/${localStorage.getItem('user_id')}/${id}`).then(
+    axios.get(`/api/user-apartments/${id}`).then(
       data => {
-        setApartments(data?.data?.apartment)
+        setApartments(data?.data?.apartment);
       }
-      )
-    }
+    );
+  };
 
   const getApartmentImages = () => {
     // Use the correct parameter names: id and user_id
@@ -36,9 +44,10 @@ function SingleApartment() {
   }
 
   const getApartmentLocation = () => {
-    axios.get(`/api/user-apartments/${localStorage.getItem('user_id')}/${id}`)
+    axios.get(`/api/user-apartments/${id}`)
       .then((response) => {
         setPosition([response.data?.apartment?.latitude, response.data?.apartment?.longitude]);
+        
        
       })
       .catch((error) => {
@@ -63,8 +72,9 @@ function SingleApartment() {
   }, [])
   function handleOpenModal(data) {
     setModal(true);
-    setDataToModal(data) }
-  // console.log("aparamentet", apartments)
+    setDataToModal(data)
+  }
+  console.log("aparamentet", apartments)
   // console.log("id", id)
 
   // console.log("dion",position)
@@ -152,8 +162,8 @@ function SingleApartment() {
                   </div>
                   {/* <button className="btn btn-md btn-primary float-end">Book Now !</button> */}
                   {/* {users.map((el) => ( */}
-                  {/* <button className="btn btn-primary float-end" onClick={() => handleOpenModal(el)}>Book now</button> */}
-                  <button className="btn btn-primary float-end" onClick={() => handleOpenModal(users[0])}>Book now</button>
+                  <button className="btn btn-primary float-end" onClick={() => handleOpenModal(apartments)}>Book now</button>
+                  {/* <button className="btn btn-primary float-end" onClick={() => handleOpenModal(users[0])}>Book now</button> */}
                   </li>
                   
               </ul>

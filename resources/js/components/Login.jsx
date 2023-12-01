@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 
 function LogInForm() {
 
-    const navigate = useNavigate('');
+  const navigate = useNavigate('');
 
   const [formData, setFormData] = useState({ email: '', password: '' });
 
@@ -18,29 +20,73 @@ function LogInForm() {
     const headers = {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
     };
-    
+
     try {
       const response = await axios.post('/api/login', formData, { headers });
 
       if (response.status === 201) {
         console.log('Login successful');
         console.log('Response data:', response.data);
-         
-      
-      const token = response.data.token;
-      const userId = response.data.user_id;
 
-     
-      localStorage.setItem('token', token);
-      localStorage.setItem('user_id', userId);
 
-        
-        window.location.href = '/'; 
-       
+        const token = response.data.token;
+        const userId = response.data.user_id;
+
+
+        localStorage.setItem('token', token);
+        localStorage.setItem('user_id', userId);
+
+
+        window.location.href = '/';
+        let timerInterval;
+        Swal.fire({
+          title: "Authenticated !",
+          html: "Login Success !",
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const timer = Swal.getPopup().querySelector("b");
+            timerInterval = setInterval(() => {
+              timer.textContent = `${Swal.getTimerLeft()}`;
+            }, 100);
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log("I was closed by the timer");
+          }
+        });
+
       }
     } catch (error) {
       console.error('Login error:', error);
       console.log('Error response data:', error.response?.data);
+      let timerInterval;
+      Swal.fire({
+        title: "OOPS !",
+        html: "Email or Password incorrect !",
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const timer = Swal.getPopup().querySelector("b");
+          timerInterval = setInterval(() => {
+            timer.textContent = `${Swal.getTimerLeft()}`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log("I was closed by the timer");
+        }
+      });
     }
   };
 

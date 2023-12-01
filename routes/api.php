@@ -39,7 +39,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/reservations/owner/{owner}', [ReservationController::class, 'getOwnerReservations']);
 
       // Edit reservation status
-      Route::put('/reservations/{apartmentId}', [ReservationController::class, 'editReservation']);
+      Route::put('/reservations/{id}', [ReservationController::class, 'editReservation']);
 });
 
 
@@ -48,10 +48,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/apartment_images/{id}', [ApartmentImageController::class, 'getImagePaths']);
 
 
-Route::get('/user-apartments/{user_id}/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);
+// Route::get('/user-apartments/{user_id}/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);
 
-Route::get('/user-apartments/{user_id}', [UserApartmentsController::class, 'ApartmentsById']);
 
+Route::get('/user-apartmentss/{user_id}', [UserApartmentsController::class, 'ApartmentsById']);
+Route::get('/user-apartments/{apartment_id}', [UserApartmentController::class, 'ApartmentById']);
 
 Route::post('/registerUser', [AuthController::class, 'registerPost']);
 Route::post('/login', [AuthController::class, 'loginPost']);

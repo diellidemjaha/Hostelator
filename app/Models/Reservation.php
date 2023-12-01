@@ -20,4 +20,8 @@ class Reservation extends Model
         'status',
         'price',
     ];
+    public function apartment()
+{
+    return $this->belongsTo(Apartment::class);
+}
 }

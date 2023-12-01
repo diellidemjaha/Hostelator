@@ -32,4 +32,8 @@ class Apartment extends Model
     {
         return $this->hasMany(ApartmentImage::class, 'apartment_id');
     }
+    public function reservations()
+{
+    return $this->hasMany(Reservation::class);
+}
 }
