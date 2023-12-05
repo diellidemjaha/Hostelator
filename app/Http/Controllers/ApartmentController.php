@@ -33,6 +33,7 @@ class ApartmentController extends Controller
             'user_id' => 'required',
             'title' => 'required',
             'description' => 'required',
+            'address' => 'required',
             'price' => 'required',
             'latitude' => 'required',
             'longitude' => 'required',

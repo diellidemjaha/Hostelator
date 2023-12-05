@@ -254,7 +254,7 @@ function UserSection() {
                 NewApartmentformData.append('title', e.target.title.value);
                 NewApartmentformData.append('description', e.target.description.value);
                 NewApartmentformData.append('price', e.target.price.value);
-                NewApartmentformData.append('address', e?.target?.address?.value);
+                NewApartmentformData.append('address', 'test');
                 NewApartmentformData.append('parking', e.target.parking.checked ? 1 : 0);
                 NewApartmentformData.append('wi_fi', e.target.wi_fi.checked ? 1 : 0);
                 NewApartmentformData.append('breakfast_included', e.target.breakfast.checked ? 1 : 0);
@@ -324,7 +324,8 @@ function UserSection() {
                                         
                                         <img
                                         alt="avatar"
-                                        src={`storage/${userProfile?.profile?.profile_pic_path}`}
+                                        // src={`/profile_pics/1_20231204152009.png`}
+                                        src={`/profile_pics/${userProfile?.profile?.profile_pic_path}`}
                                             className="rounded-circle img-fluid"
                                             style={{ width: '150px' }}
                                             />

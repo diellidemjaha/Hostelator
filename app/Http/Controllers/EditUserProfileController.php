@@ -15,18 +15,10 @@ use App\Http\Controllers\AuthController;
 
 class EditUserProfileController extends Controller
 {
-
     public function editUserProfile(Request $request)
     {
         try {
-            // Find the user by the given ID
-            // $user = User::findOrFail($id);
             $id = $request->input('id');
-            // $currentProfile = EditUserProfile::find($id);
-            // $currentProfile = EditUserProfile::find(['id' => $id]);
-            // $hasData  = EditUserProfile::has($id);
-            // if ($hasData) {
-            // $currentProfile = EditUserProfile::find($id);
             $currentProfile = EditUserProfile::find($id);
 
             if (!$currentProfile) {
@@ -34,16 +26,7 @@ class EditUserProfileController extends Controller
                 $student->user_id = Auth::id();
                 $student->full_name = $request->input('full_name');
                 $student->address = $request->input('address');
-                if ($request->hasFile('profile_pic')) {
-                    // Store the new profile picture
-                    $imageName = 'profile_pics/' . $id . '_' . now()->format('YmdHis') . '.' . $request->file('profile_pic')->extension();
-                    $request->file('profile_pic')->storeAs('public', $imageName);
-                    // Update the profile picture path in the database
-                    $student->profile_pic_path = $imageName;
-                }
-                $student->save();
             } else {
-
                 $currentProfile->address = $request->input('address');
                 $currentProfile->full_name = $request->input('full_name');
                 $currentProfile->profession = $request->input('profession');
@@ -51,35 +34,40 @@ class EditUserProfileController extends Controller
                 $currentProfile->twitter_link = $request->input('twitter_link');
                 $currentProfile->instagram_link = $request->input('instagram_link');
                 $currentProfile->facebook_link = $request->input('facebook_link');
-                // Handle profile picture update
-                if ($request->hasFile('profile_pic')) {
+            }
 
-                    // Delete the previous profile picture if it exists
-                    if ($currentProfile->profile_pic_path) {
-                        Storage::delete('profile_pics/' . $currentProfile->profile_pic_path);
-                    }
+            if ($request->hasFile('profile_pic')) {
+                if ($currentProfile && $currentProfile->profile_pic_path) {
+                    Storage::delete('/profile_pics/' . $currentProfile->profile_pic_path);
+                }
 
-                    // Store the new profile picture
-                    $imageName = 'profile_pics/' . $id . '_' . now()->format('YmdHis') . '.' . $request->file('profile_pic')->extension();
-                    $request->file('profile_pic')->storeAs('public', $imageName);
-                    // Update the profile picture path in the database
+                $imageName = $id . '_' . now()->format('YmdHis') . '.' . $request->file('profile_pic')->extension();
+                $request->file('profile_pic')->move(public_path('/profile_pics'), $imageName);
+
+                if (!$currentProfile) {
+                    $student->profile_pic_path = $imageName;
+                } else {
                     $currentProfile->profile_pic_path = $imageName;
                 }
-                $currentProfile->update();
             }
-            // Save the user profile
 
+            if (!$currentProfile) {
+                $student->save();
+                $user_id = $student->user_id;
+            } else {
+                $currentProfile->update();
+                $user_id = $currentProfile->user_id;
+            }
 
-            // Build the response
             $response = [
                 'message' => 'User info and profile picture successfully updated',
-                'user_id' => $currentProfile->user_id,
+                'user_id' => $user_id,
             ];
 
             return response()->json($response, 200);
         } catch (\Exception $e) {
-
-            $e->getMessage();
+            // Handle the exception (log it or return an error response)
+            return response()->json(['error' => 'An error occurred while processing the request.'], 500);
         }
     }
 }

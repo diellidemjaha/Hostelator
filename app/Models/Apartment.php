@@ -14,7 +14,7 @@ class Apartment extends Model
         'title',
         'description',
         'price',
-        // 'address',
+        'address',
         'latitude',
         'longitude',
         'parking',
@@ -35,5 +35,15 @@ class Apartment extends Model
     public function reservations()
 {
     return $this->hasMany(Reservation::class);
+}
+public function updateOverallRating()
+{
+    $averageRating = $this->ratings()->avg('rating');
+    $this->rating = $averageRating;
+    $this->save();
+}
+public function ratings()
+{
+    return $this->hasMany(Rating::class);
 }
 }

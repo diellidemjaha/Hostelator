@@ -21,6 +21,7 @@ class CreateApartmentsTable extends Migration
             $table->boolean('wi_fi')->default(false);
             $table->boolean('breakfast_included')->default(false);
             $table->json('available_dates')->nullable();
+            $table->decimal('rating', 3, 2)->default(0);
             $table->timestamps();
         });
     }

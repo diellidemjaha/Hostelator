@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import NavBar from "./Navbar";
 import Footer from "./Footer";
 import Reservation from "./Reservation";
+import { Rating } from 'react-simple-star-rating'
 
 
 function SingleApartment() {
@@ -16,6 +17,8 @@ function SingleApartment() {
   const [modal, setModal] = useState(false)
   const [users, setUsers] = useState([])
   const [dataToModal, setDataToModal] = useState([])
+  const [rating, setRating] = useState(0)
+  const [averageRating, setAverageRating] = useState(0);
 
   // const getApartments = () => {
   //   axios.get(`/api/user-apartments/${localStorage.getItem('user_id')}/${id}`).then(
@@ -24,6 +27,37 @@ function SingleApartment() {
   //     }
   //     )
   //   }
+
+  const handleRating = rate => {
+    setRating(rate);
+    // TODO: Send the rating to the server using Axios
+    // You can use the 'rating' state and send it in a POST request to your server
+    // Example:
+    axios.post(`/api/apartments/ratings`, { rating: rate, apartment_id: id })
+      .then(response => {
+        console.log('Rating submitted successfully');
+      })
+      .catch(error => {
+        console.error('Error submitting rating:', error);
+      });
+  };
+
+  const getRatings = () => {
+    // TODO: Fetch ratings for the apartment from the server
+    // Example:
+    axios.get(`/api/apartments/${id}/ratings`)
+      .then(response => {
+        // const averageRating = response.data.averageRating;
+        setAverageRating(response.data.average_rating);
+      })
+      .catch(error => {
+        console.error('Error fetching ratings:', error);
+      });
+      
+      // Temporary value, replace it with the actual average rating from the server
+      // setAverageRating(averageRating);
+     
+  };
 
   const getApartments = () => {
     axios.get(`/api/user-apartments/${id}`).then(
@@ -69,12 +103,14 @@ function SingleApartment() {
     getApartmentImages();
     getApartmentLocation();
     fetchUsers();
+    getRatings();
   }, [])
   function handleOpenModal(data) {
     setModal(true);
     setDataToModal(data)
   }
   console.log("aparamentet", apartments)
+  console.log("Rating", averageRating)
   // console.log("id", id)
 
   // console.log("dion",position)
@@ -157,7 +193,26 @@ function SingleApartment() {
                 <li className="list-group-item">
                   <div className="d-flex gap-2">
                     <div className="col-md-12 col-lg-6">
-                      <div id="calendar"></div>
+                    <div id="rating">
+                        {averageRating.length > 0 ? (
+                          <>
+                            Average Rating: 
+                            <Rating
+                              // ratingValue={4.38}
+                              initialValue={averageRating}
+                              size={20}
+                              label
+                            />
+                          </>
+                        ) : (
+                          <>
+                            Rate this Apartment:
+                            <Rating
+                              onClick={handleRating}
+                            />
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                   {/* <button className="btn btn-md btn-primary float-end">Book Now !</button> */}

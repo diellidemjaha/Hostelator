@@ -10,8 +10,10 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UserApartmentsController;
 use App\Http\Controllers\UserApartmentController;
 use App\Http\Controllers\ApartmentImageController;
+// use App\Http\Controllers\ApartmentRatings;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ApartmentRatings;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +70,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/apartments/{user_id}', [ApartmentController::class, 'getUserApartmentsWithThumbnails']);
 
     Route::get('/apartments/{user_id}/{apartment_id}/image', [ApartmentImageController::class, 'getImageByUserId']);
+
+    Route::post('/apartments/ratings', [ApartmentRatings::class, 'store']);
+    Route::get('/apartments/{id}/ratings', [ApartmentRatings::class, 'getRatings']);
     // Route::post('/apartments', [AuthController::class, 'storeApartment'])->middleware('api');
     // Route::post('/apartments', [ApartmentController::class, 'storeApartment'])->middleware('web');
     Route::get('/apartments/index', [ApartmentController::class, 'getApartments']);
