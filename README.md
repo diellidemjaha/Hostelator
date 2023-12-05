@@ -108,6 +108,7 @@ The application uses several tables to store essential information. You can find
 - `edit_user_profile`: Stores the updates on the user's profile.
 - `apartments`: Contains details about posted apartments.
 - `apartment_images`: Manages images associated with each apartment.
+- `ratings`: Manages the ratings associated with each apartment.
 - `reservations`: Handles reservation information, including dates and prices.
 
 To set up the database, run the following command:
