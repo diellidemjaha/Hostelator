@@ -2,6 +2,10 @@
 
 Hostelator is a feature-rich web application that empowers users to seamlessly search, post, and book apartments. Built with the latest technologies such as PHP Laravel for the backend, React for the frontend, and MySQL for the database, Hostelator offers a user-friendly experience for both hosts and guests.
 
+
+![Example Screenshot](hostelator-1-screenshot.jpg)
+![Example Screenshot](hostelator-2-screenshot.jpg)
+
 ### Table of Contents
 - [Features](#features)
 - [Tech Stack](#tech-stack)
