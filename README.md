@@ -7,10 +7,10 @@
 # Hostelator
 Hostelator is a full-stack web application that allows users to explore and list apartments. The backend is built with Laravel, providing a robust MVC architecture, while the frontend is developed using ReactJS. The application utilizes a MySQL database to store and manage data.
 
-##Getting Started
+## Getting Started
 Follow these steps to initialize and run the Hostelator application on your local machine.
 
-##Prerequisites
+## Prerequisites
 Ensure you have Node.js and Composer installed on your system.
 Installation
 Clone the repository:
@@ -89,18 +89,18 @@ npm run dev
 
 Open your browser and visit http://localhost:8000 to view the Hostelator application.
 
-##Usage
+## Usage
 Users can freely search for apartments without logging in or signing up.
 After registration, users can add their apartments to the listings.
 User profiles with profile pictures and records are available.
 Apartment details include an image gallery (up to 4 images), price, title, description, and amenities (e.g., parking, Wi-Fi, breakfast included).
 The application uses Laravel Sanctum for authentication during login and registration.
 
-##Folder Structure
+## Folder Structure
 Laravel backend files are organized in the standard Laravel structure.
 ReactJS frontend files can be found in the resources/js/ folder.
 
-##Notes
+## Notes
 Make sure your MySQL server is running before attempting to run the application.
 OpenStreet Map integration is used for accurate apartment locations.
 Now you're all set to explore and utilize Hostelator! If you encounter any issues, refer to the troubleshooting section in the documentation or reach out to our support team. Happy hosting!
