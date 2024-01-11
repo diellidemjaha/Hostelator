@@ -7,7 +7,23 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+<<<<<<< HEAD
 ## About Laravel
+=======
+
+![Example Screenshot](hostelator-1-screenshot.jpg)
+![Example Screenshot](hostelator-2-screenshot.jpg)
+
+### Table of Contents
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Database Structure](#database-structure)
+- [Contribution](#contribution)
+- [License](#license)
+>>>>>>> 942afcdc90f3a2cab1734deefe641bf7bf788a5b
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
@@ -63,4 +79,66 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 ## License
 
+<<<<<<< HEAD
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+=======
+    ```bash
+    cd hostelator
+    ```
+
+3. Install PHP dependencies:
+
+    ```bash
+    composer install
+    ```
+
+4. Install JavaScript dependencies:
+
+    ```bash
+    npm install
+    ```
+
+5. Copy the `.env.example` file to `.env`:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+6. Configure your `.env` file with database information and other necessary details.
+
+7. Migrate the database:
+
+    ```bash
+    php artisan migrate
+    ```
+
+8. Generate application key:
+
+    ```bash
+    php artisan key:generate
+    ```
+
+9. Start the development server:
+
+    ```bash
+    php artisan serve
+    ```
+
+Hostelator should now be running locally at `http://localhost:8000`.
+
+## Database Structure
+
+The application uses several tables to store essential information. You can find the table structures in the migration files. Some key tables include:
+
+- `users`: Stores user information.
+- `edit_user_profile`: Stores the updates on the user's profile.
+- `apartments`: Contains details about posted apartments.
+- `apartment_images`: Manages images associated with each apartment.
+- `ratings`: Manages the ratings associated with each apartment.
+- `reservations`: Handles reservation information, including dates and prices.
+
+To set up the database, run the following command:
+
+```bash
+php artisan migrate
+>>>>>>> 942afcdc90f3a2cab1734deefe641bf7bf788a5b
