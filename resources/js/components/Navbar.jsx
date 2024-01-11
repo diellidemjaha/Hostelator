@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
     const navigate = useNavigate('')
+    
     const handleLogout = async (e) => {
         try {
         const response = await axios.post('api/logout', null, {

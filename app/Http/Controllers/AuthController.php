@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum', ['except' => ['login', 'register', 'registerPost', 'loginPost', 'getApartmentsWithImageThumbnails']]);
+        $this->middleware('auth:sanctum', ['except' => ['login', 'register', 'registerPost', 'loginPost', 'getApartmentsWithImageThumbnails', 'logout']]);
     }
     public function register()
     {
@@ -81,7 +81,6 @@ class AuthController extends Controller
     public function logout()
     {
         if (auth()->check()) {
-            // Revoke the user's tokens
             auth()->user()->tokens->each(function ($token, $key) {
                 $token->delete();
             });

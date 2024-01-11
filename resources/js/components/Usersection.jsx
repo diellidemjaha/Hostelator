@@ -145,7 +145,8 @@ function UserSection() {
             
             
             try {
-                const response = await axios.post(`/api/update-profile/${userProfile?.profile?.id}`, formData, {
+                const userId = localStorage.getItem('user_id');
+                const response = await axios.post(`/api/update-profile/${userId}`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -198,12 +199,15 @@ function UserSection() {
                 // useEffect(() => {
                     //     getApartments();
                     // }, [])
+                    const headers = {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                      };
                     
                     useEffect(() => {
         async function fetchApartments() {
             try {
                 const userId = localStorage.getItem('user_id');
-                const response = await axios.get(`/api/apartments/${userId}`); // Replace with your API endpoint
+                const response = await axios.get(`/api/apartments/${userId}`, {headers}); 
                 setApartments(response.data);
             } catch (error) {
                 console.error('Error fetching apartments:', error);
@@ -212,7 +216,7 @@ function UserSection() {
         async function fetchOwnerReservations() {
             try {
                 const userId = localStorage.getItem('user_id');
-                const response = await axios.get(`/api/reservations/owner/${userId}`); // Replace with your API endpoint
+                const response = await axios.get(`/api/reservations/owner/${userId}`, {headers});
                 setReservations(response?.data?.ownerReservations);
             } catch (error) {
                 console.error('Error fetching apartments:', error);
@@ -221,7 +225,7 @@ function UserSection() {
         async function fetchUserReservations() {
             try {
                 const userId = localStorage.getItem('user_id');
-                const response = await axios.get(`/api/reservations/user/${userId}`); // Replace with your API endpoint
+                const response = await axios.get(`/api/reservations/user/${userId}`, {headers}); // Replace with your API endpoint
                 setBooking(response.data.reservations)
             } catch (error) {
                 console.error('Error fetching apartments:', error);

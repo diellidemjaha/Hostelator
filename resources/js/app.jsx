@@ -24,7 +24,7 @@ function App() {
                     <Route path="/SingleApartment/:id" element={logged_in == null ? <LogInForm/> : <SingleApartment />} />
                     <Route path="/Apartments/" element={<Apartments />} />
                     <Route path="/UpdateApartment/:apartmentId" element={<UpdateApartment />} />
-                    <Route path="/logout" />
+                    {/* <Route path="/logout" /> */}
                     <Route path="/History" element={<History/>} />
                 </Routes>
             </Router>

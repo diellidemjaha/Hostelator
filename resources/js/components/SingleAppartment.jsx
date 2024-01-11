@@ -160,9 +160,9 @@ function SingleApartment() {
                 <p className="card-text">
                   {apartments?.description}
                 </p>
-                <p className="card-text">
+                {/* <p className="card-text">
                   <small className="text-muted">from {apartments?.user_id}</small>
-                </p>
+                </p> */}
               </div>
               <div id="map-container">
 
@@ -196,7 +196,7 @@ function SingleApartment() {
                     <div id="rating">
                         {averageRating.length > 0 ? (
                           <>
-                            Average Rating: 
+                            Average Rating: {averageRating}
                             <Rating
                               // ratingValue={4.38}
                               initialValue={averageRating}

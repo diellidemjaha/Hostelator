@@ -26,6 +26,7 @@ class EditUserProfileController extends Controller
                 $student->user_id = Auth::id();
                 $student->full_name = $request->input('full_name');
                 $student->address = $request->input('address');
+                $user_id = $student->user_id;
             } else {
                 $currentProfile->address = $request->input('address');
                 $currentProfile->full_name = $request->input('full_name');
@@ -34,6 +35,7 @@ class EditUserProfileController extends Controller
                 $currentProfile->twitter_link = $request->input('twitter_link');
                 $currentProfile->instagram_link = $request->input('instagram_link');
                 $currentProfile->facebook_link = $request->input('facebook_link');
+                $user_id = $currentProfile->user_id;
             }
 
             if ($request->hasFile('profile_pic')) {
@@ -53,11 +55,12 @@ class EditUserProfileController extends Controller
 
             if (!$currentProfile) {
                 $student->save();
-                $user_id = $student->user_id;
-            } else {
-                $currentProfile->update();
-                $user_id = $currentProfile->user_id;
-            }
+                // $user_id = $student->user_id;
+            } 
+            // else {
+            //     $currentProfile->update();
+            //     $user_id = $currentProfile->user_id;
+            // }
 
             $response = [
                 'message' => 'User info and profile picture successfully updated',
