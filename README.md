@@ -4,7 +4,7 @@
 ![Example Screenshot](hostelator-2-screenshot.jpg)
 
 
-##Hostelator
+# Hostelator
 Hostelator is a full-stack web application that allows users to explore and list apartments. The backend is built with Laravel, providing a robust MVC architecture, while the frontend is developed using ReactJS. The application utilizes a MySQL database to store and manage data.
 
 ##Getting Started
