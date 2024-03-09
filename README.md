@@ -5,7 +5,7 @@
 
 
 # Hostelator
-Hostelator is a full-stack web application that allows users to explore and list apartments. The backend is built with Laravel, providing a robust MVC architecture, while the frontend is developed using ReactJS. The application utilizes a MySQL database to store and manage data.
+Hostelator is a full-stack web application that allows users to explore and list apartments. The backend is built with Laravel, providing a robust MVC architecture, while the frontend is developed using ReactJS. The application utilizes a MySQL database to store and manage data.It uses REST API to fetch data from the server.
 
 ## Getting Started
 Follow these steps to initialize and run the Hostelator application on your local machine.
@@ -18,7 +18,7 @@ Clone the repository:
 bash
 Copy code
 ```
-git clone https://github.com/your-username/hostelator.git
+git clone https://github.com/diellidemjaha/hostelator.git
 ```
 Navigate to the project directory:
 
@@ -60,12 +60,12 @@ Copy code
 php artisan key:generate
 ```
 
-Run the database migrations and seed data:
+Run the database migrations:
 
 bash
 Copy code
 ```
-php artisan migrate --seed
+php artisan migrate
 Running the Application
 ```
 
