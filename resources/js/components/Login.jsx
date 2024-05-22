@@ -55,7 +55,6 @@ function LogInForm() {
             clearInterval(timerInterval);
           }
         }).then((result) => {
-          /* Read more about handling dismissals below */
           if (result.dismiss === Swal.DismissReason.timer) {
             console.log("I was closed by the timer");
           }
@@ -82,7 +81,6 @@ function LogInForm() {
           clearInterval(timerInterval);
         }
       }).then((result) => {
-        /* Read more about handling dismissals below */
         if (result.dismiss === Swal.DismissReason.timer) {
           console.log("I was closed by the timer");
         }
@@ -120,7 +118,7 @@ function LogInForm() {
                           type="email"
                           id="form2Example17"
                           className="form-control form-control-lg"
-                          name="email" // Add name attribute
+                          name="email" 
                           onChange={(e) => { handleChange(e) }}
                         />
                         <label className="form-label">Email address</label>
@@ -130,7 +128,7 @@ function LogInForm() {
                           type="password"
                           id="form2Example27"
                           className="form-control form-control-lg"
-                          name="password" // Add name attribute
+                          name="password" 
                           onChange={(e) => { handleChange(e) }}
                         />
                         <label className="form-label">Password</label>

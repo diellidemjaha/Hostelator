@@ -7,11 +7,9 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { useMapEvents } from 'react-leaflet';
-// import History from './History';
 
 
 function UserSection() {
-    // Fetch user_id into local storage
     const navigate = useNavigate();
     const [userProfile, setUserProfile] = useState(null);
     const [error, setError] = useState(null);
@@ -50,16 +48,15 @@ function UserSection() {
     }
     
     // useEffect(() => {
-        //     // Use a callback to set userId after retrieving it from local storage
         //     const userId = localStorage.getItem('user_id');
         //     console.log('user_id', userId);
         //     setUserId(userId);
-        // }, []); // Empty dependency array ensures this runs only once
+        // }, []); 
         
         //display user profile
         const fetchUserProfile = async () => {
             try {
-                // const response = await axios.get(`/api/profile/${ localStorage.getItem('user_id')}`); // Replace with the correct API endpoint
+                // const response = await axios.get(`/api/profile/${ localStorage.getItem('user_id')}`); 
                 const response = await axios.get(`/api/profile`); // Replace with the correct API endpoint
 
             if (response.status === 200) {
@@ -85,13 +82,11 @@ function UserSection() {
             }
         };
         
-        // Call the fetchUserProfile function when the component mounts
         useEffect(() => {
             fetchUserProfile();
-    }, [])// Empty dependency array ensures the effect runs only once after mounting
+    }, [])
 
     
-    //Update profile code below
     const [editTrigger, setEditTrigger] = useState(false);
     const [profileData, setProfileData] = useState({
         full_name: '',
@@ -105,7 +100,6 @@ function UserSection() {
     });
     
     
-    // Function to handle input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setProfileData((prevProfileData) => ({
@@ -114,12 +108,10 @@ function UserSection() {
         }));
     };
     
-    // Function to handle file input changes
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setProfileData({ ...profileData, profile_pic: file });
     };
-    // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -155,18 +147,16 @@ function UserSection() {
                 if (response.status === 200) {
                     console.log(response);
                     Swal.fire('Profile updated succesfully!');
-                    // Handle success
                     // console.log('Profile updated successfully:', response.data.message);
                     // // console.log(profileData.user_id);
                     // console.log('user-profile-info', response.data.user_id);
                     console.log('res', response);
                     
-                    // Call fetchUserProfile to update the user profile data on the page
                     fetchUserProfile();
                     navigate('/');
                     
                 } else {
-                    // Handle other HTTP status codes
+                  
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
@@ -176,12 +166,9 @@ function UserSection() {
                 console.error('Profile update failed. Please try again later.');
             }
 
-            // Toggle the edit mode off
             setEditTrigger(false);
             
-            // Handle other success actions as needed
         } catch (error) {
-            // Handle network or other errors
             console.error('Error updating profile:', error);
             console.error('An error occurred while updating the profile.');
         }
@@ -225,7 +212,7 @@ function UserSection() {
         async function fetchUserReservations() {
             try {
                 const userId = localStorage.getItem('user_id');
-                const response = await axios.get(`/api/reservations/user/${userId}`, {headers}); // Replace with your API endpoint
+                const response = await axios.get(`/api/reservations/user/${userId}`, {headers});
                 setBooking(response.data.reservations)
             } catch (error) {
                 console.error('Error fetching apartments:', error);
@@ -251,7 +238,6 @@ function UserSection() {
                 e.preventDefault();
                 const NewApartmentformData = new FormData();
                 
-                // Append data to formData
                 NewApartmentformData.append('user_id', localStorage.getItem('user_id'));
                 NewApartmentformData.append('latitude', position[0]);
                 NewApartmentformData.append('longitude', position[1]);
@@ -263,7 +249,6 @@ function UserSection() {
                 NewApartmentformData.append('wi_fi', e.target.wi_fi.checked ? 1 : 0);
                 NewApartmentformData.append('breakfast_included', e.target.breakfast.checked ? 1 : 0);
                 
-                // Append image files to formData
                 NewApartmentformData.append('image1', e.target.image1.files[0]);
                 NewApartmentformData.append('image2', e.target.image2.files[0]);
                 NewApartmentformData.append('image3', e.target.image3.files[0]);
@@ -296,7 +281,7 @@ function UserSection() {
 
     const handleReservation = (data, id) => {
         console.log(data, id)
-        axios.put(`/api/reservations/${id}`, { status: data }).then(
+        axios.put(`/api/reservations/${id}`, { status: data }, {headers}).then(
             data => {
                 console.log("data", data.data)
                 window.location.href = `/`;

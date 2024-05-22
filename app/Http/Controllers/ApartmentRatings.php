@@ -12,19 +12,16 @@ class ApartmentRatings extends Controller
     public function store(Request $request)
     {
 
-        // Get the authenticated user or handle user authentication logic
         $user = Auth::user();
-        // Validate request
 
         $rating = new Rating([
             'apartment_id' => $request->input('apartment_id'),
             'user_id' => $user->id,
-            'rating' => $request->input('rating'), // Or use your own formula
+            'rating' => $request->input('rating'), 
         ]);
 
         $rating->save();
 
-        // Update overall rating for the apartment
         $apartment = $rating->apartment;
         $apartment->updateOverallRating();
 
@@ -63,7 +60,6 @@ class ApartmentRatings extends Controller
 
         return response()->json(['average_rating' => number_format($averageRating, 2)], 200);
     } catch (\Exception $e) {
-        // Handle the exception, return an error response, or log the error
         return response()->json(['error' => 'Failed to fetch ratings.'], 500);
     }
 }

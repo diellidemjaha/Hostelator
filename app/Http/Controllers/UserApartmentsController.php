@@ -9,7 +9,6 @@ class UserApartmentsController extends Controller
 {
     public function ApartmentsById($user_id)
     {
-        // Retrieve apartments owned by the user with the given user_id
         $apartments = Apartment::where('user_id', $user_id)->get();
 
         return response()->json(['apartments' => $apartments]);

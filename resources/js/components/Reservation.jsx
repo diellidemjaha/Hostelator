@@ -36,7 +36,6 @@ const Reservation = (props) => {
         getReservations();
     }, [props?.data?.id, props?.data?.id]);
     useEffect(() => {
-        // Calculate the number of days between start and end dates
         const days = differenceInDays(selectedDate.endDate, selectedDate.startDate);
         setNumberOfDays(days > 0 ? days : 0);
 
@@ -50,6 +49,9 @@ const Reservation = (props) => {
 
         const startDate = format(selectedDate.startDate, 'yyyy-MM-dd');
         const endDate = format(selectedDate.endDate, 'yyyy-MM-dd');
+        const headers = {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          };
 
         let payload = {
             user_id: localStorage.getItem('user_id'),
@@ -63,11 +65,10 @@ const Reservation = (props) => {
             date_out: endDate
         };
 
-        axios.post(`/api/reservations`, payload)
+        axios.post(`/api/reservations`, payload, {headers})
             .then(data => {
                 // alert('Reservation success');
                 Swal.fire("Apartment reservation sent!");
-                // After successful reservation, update the reservations
                 getReservations();
                 navigate('/');
             })
@@ -76,7 +77,6 @@ const Reservation = (props) => {
             });
     };
 
-    // Generate an array of reserved dates to disable in the DatePicker
     const reservedDates = allBooking.map(booking => {
         const start = new Date(booking.date_in);
         const end = new Date(booking.date_out);
@@ -131,7 +131,7 @@ const Reservation = (props) => {
                                     endDate={selectedDate.endDate}
                                     inline
                                     dateFormat="yyyy-MM-dd"
-                                    minDate={selectedDate.startDate}  // Set minimum selectable date
+                                    minDate={selectedDate.startDate}  
                                     excludeDates={reservedDates}
                                 />
                             </div>

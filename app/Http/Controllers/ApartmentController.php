@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ApartmentController extends Controller
 {
-    // Display a listing of the resource.
     public function getApartments()
     {
         $apartments = Apartment::all();
@@ -20,13 +19,11 @@ class ApartmentController extends Controller
         return response()->json(['apartments' => $apartments]);
     }
 
-    // Show the form for creating a new resource.
     public function create()
     {
         return view('apartments.create');
     }
 
-    // Store a newly created resource in storage.
     public function storeApartment(Request $request)
     {
         $data = $request->validate([
@@ -42,7 +39,6 @@ class ApartmentController extends Controller
             'breakfast_included' => 'required',
         ]);
 
-        // Create the apartment with the provided data
         $apartment = Apartment::create($data);
 
         $apartmentImages = [];
@@ -60,7 +56,7 @@ class ApartmentController extends Controller
                 $image->move(public_path('/apartment_images'), $imageName);
 
                 $apartmentImage = new ApartmentImage();
-                $apartmentImage->apartment_id = $apartment->id; // Use the newly created apartment's ID
+                $apartmentImage->apartment_id = $apartment->id; 
                 $apartmentImage->image_path = $imagePath;
                 $apartmentImage->save();
 
@@ -76,13 +72,11 @@ class ApartmentController extends Controller
     }
 
 
-    // Display the specified resource.
     public function show(Apartment $apartment)
     {
         return view('apartments.show', compact('apartment'));
     }
 
-    // Show the form for editing the specified resource.
     public function edit(Apartment $apartment)
     {
         return view('apartments.edit', compact('apartment'));
@@ -158,8 +152,7 @@ class ApartmentController extends Controller
             return response()->json(['message' => 'Apartment not found'], 404);
         }
 
-        // Uncomment the line below if you have specific validation rules
-        // $request->validate([...]);
+       
 
         DB::beginTransaction();
 
@@ -177,7 +170,6 @@ class ApartmentController extends Controller
 
             Log::info('Data received for update:', $data);
 
-            // Validate image uploads
             $request->validate([
                 'image1' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'image2' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -185,12 +177,10 @@ class ApartmentController extends Controller
                 'image4' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            // Update the apartment with the provided data
             $apartment->update($data);
 
             Log::info('Apartment Updated:', ['id' => $id, 'data' => $request->all()]);
 
-            // Update apartment images
             $apartmentImages = [];
 
             for ($i = 1; $i <= 4; $i++) {
@@ -228,13 +218,10 @@ class ApartmentController extends Controller
         ], 200);
     }
 
-    // Remove the specified resource from storage.
     public function destroyApartment(Apartment $apartment)
     {
-        // Delete associated images first
         $apartment->images()->delete();
 
-        // Then delete the apartment
         $apartment->delete();
 
         return response()->json([
@@ -246,7 +233,6 @@ class ApartmentController extends Controller
     public function destroyApartmentImages(ApartmentImage $id)
     {
         try {
-            // No need to use ApartmentImage::find($id) as Laravel already fetches the model instance based on the route parameter
 
             if (!$id) {
                 return response()->json(['message' => 'Apartment Image not found'], 404);
@@ -270,7 +256,6 @@ class ApartmentController extends Controller
         $apartments = Apartment::with('images')
             ->get();
 
-        // Process the apartments and retrieve the first image path for each
         $apartmentsWithThumbnails = $apartments->map(function ($apartment) {
             $thumbnail = $apartment->images->first();
             return [
@@ -279,7 +264,6 @@ class ApartmentController extends Controller
                 'price' => $apartment->price,
                 'description' => $apartment->description,
                 'first_image_path' => $thumbnail ? $thumbnail->image_path : 'default-thumbnail.jpg',
-                // Add other apartment details as needed
             ];
         });
 
@@ -332,17 +316,14 @@ class ApartmentController extends Controller
     public function updateApartmentImages(Request $request, $id)
 {
     try {
-        // Find the apartment
         $apartment = Apartment::find($id);
 
         if (!$apartment) {
             return response()->json(['message' => 'Apartment not found'], 404);
         }
 
-        // Clear existing images for the apartment
         $apartment->images()->delete();
 
-        // Update apartment images
         $apartmentImages = [];
 
         for ($i = 1; $i <= 4; $i++) {

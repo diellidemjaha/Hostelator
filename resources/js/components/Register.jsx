@@ -63,7 +63,7 @@ function RegisterForm() {
                           type="text"
                           id="form2Example17"
                           className="form-control form-control-lg"
-                          name="name" // Add name attribute
+                          name="name" 
                           onChange={(e) => { handleChange(e) }}
                         />
                         <label className="form-label">Name</label>
@@ -73,7 +73,7 @@ function RegisterForm() {
                           type="email"
                           id="form2Example17"
                           className="form-control form-control-lg"
-                          name="email" // Add name attribute
+                          name="email" 
                           onChange={(e) => { handleChange(e) }}
                         />
                         <label className="form-label">Email address</label>
@@ -83,7 +83,7 @@ function RegisterForm() {
                           type="password"
                           id="form2Example27"
                           className="form-control form-control-lg"
-                          name="password" // Add name attribute
+                          name="password" 
                           onChange={(e) => { handleChange(e) }}
                         />
                         <label className="form-label">Password</label>

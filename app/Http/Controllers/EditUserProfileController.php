@@ -6,12 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\EditUserProfile;
-use Illuminate\Support\Facades\Storage; // Import Storage facade for file operations
+use Illuminate\Support\Facades\Storage; 
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Profiler\Profile;
 use App\Http\Controllers\AuthController;
 
-// use Intervention\Image\Facades\Image as Image;
 
 class EditUserProfileController extends Controller
 {
@@ -69,7 +68,6 @@ class EditUserProfileController extends Controller
 
             return response()->json($response, 200);
         } catch (\Exception $e) {
-            // Handle the exception (log it or return an error response)
             return response()->json(['error' => 'An error occurred while processing the request.'], 500);
         }
     }

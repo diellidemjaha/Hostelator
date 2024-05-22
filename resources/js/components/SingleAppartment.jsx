@@ -30,9 +30,6 @@ function SingleApartment() {
 
   const handleRating = rate => {
     setRating(rate);
-    // TODO: Send the rating to the server using Axios
-    // You can use the 'rating' state and send it in a POST request to your server
-    // Example:
     axios.post(`/api/apartments/ratings`, { rating: rate, apartment_id: id })
       .then(response => {
         console.log('Rating submitted successfully');
@@ -43,19 +40,14 @@ function SingleApartment() {
   };
 
   const getRatings = () => {
-    // TODO: Fetch ratings for the apartment from the server
-    // Example:
     axios.get(`/api/apartments/${id}/ratings`)
       .then(response => {
-        // const averageRating = response.data.averageRating;
         setAverageRating(response.data.average_rating);
       })
       .catch(error => {
         console.error('Error fetching ratings:', error);
       });
       
-      // Temporary value, replace it with the actual average rating from the server
-      // setAverageRating(averageRating);
      
   };
 
@@ -68,7 +60,6 @@ function SingleApartment() {
   };
 
   const getApartmentImages = () => {
-    // Use the correct parameter names: id and user_id
     axios.get(`/api/apartment_images/${id}`).then(
       (response) => {
         setImagePaths(response?.data?.images);

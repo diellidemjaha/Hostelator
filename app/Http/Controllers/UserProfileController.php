@@ -41,7 +41,6 @@ class UserProfileController extends Controller
                 'message' => 'An error occurred while retrieving the profile.' . $e->getMessage(),
             ];
 
-            // Log the error for debugging
             Log::error('Error retrieving profile: ' . $e->getMessage());
 
             return response()->json($response, 500);

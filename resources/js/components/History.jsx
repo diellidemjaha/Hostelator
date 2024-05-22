@@ -35,15 +35,12 @@ function History() {
             </thead>
             <tbody>
                 {reservations?.map((el) => {
-                    // Calculate the duration in days
                     const dateIn = new Date(el.date_in);
                     const dateOut = new Date(el.date_out);
                     const durationInDays = Math.floor((dateOut - dateIn) / (24 * 60 * 60 * 1000));
 
-                    // Calculate the total amount
                     const totalPrice = el.price * durationInDays;
 
-                    // Map status values to corresponding text
                     const statusText = {
                         1: 'Pending',
                         2: 'Approved',

@@ -18,7 +18,7 @@ function Apartments() {
         async function fetchApartments() {
             try {
                 // const userId = localStorage.getItem('user_id');
-                const response = await axios.get(`/api/apartments-with-thumbnails`); // Replace with your API endpoint
+                const response = await axios.get(`/api/apartments-with-thumbnails`); 
                 setApartments(response.data);
             } catch (error) {
                 console.error('Error fetching apartments:', error);

@@ -22,10 +22,9 @@ class ApartmentImageController extends Controller
     public function getImagePaths($id)
 {
     $imageData = ApartmentImage::where('apartment_id', $id)
-        ->select('id', 'image_path') // Include the 'id' field in the query
+        ->select('id', 'image_path') 
         ->get();
 
-    // Create an array of objects with 'imagePath' and 'id'
     $images = $imageData->map(function ($item) {
         return [
             'id' => $item->id,
