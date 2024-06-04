@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ApartmentRatings extends Controller
 {
+    //Store the Aparatment rating
     public function store(Request $request)
     {
 
@@ -27,18 +28,8 @@ class ApartmentRatings extends Controller
 
         return response()->json(['message' => 'Rating added successfully']);
     }
-    // public function getRatings($id)
-    // {
-    //     try {
-    //         $apartment = Apartment::findOrFail($id);
-    //         $ratings = $apartment->ratings;
 
-    //         return response()->json(['ratings' => $ratings], 200);
-    //     } catch (\Exception $e) {
-    //         // Handle the exception, return an error response, or log the error
-    //         return response()->json(['error' => 'Failed to fetch ratings.'], 500);
-    //     }
-    // }
+    //Get the specific Apartment ratings
     public function getRatings($id)
 {
     try {
