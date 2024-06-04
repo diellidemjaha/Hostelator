@@ -65,17 +65,7 @@ class ReservationController extends Controller
     
         return response()->json(['message' => 'Reservation status updated successfully', 'req' => $request->status]);
     }
-    // public function getOwnerReservations($owner)
-    // {
-    //     $user = Auth::user();
-    //     if (!$user) {
-    //         return response()->json(['error' => 'Unauthorized'], 401);
-    //     }
-
-    //     $ownerReservations = Reservation::where('owner_id', $owner)->get();
-
-    //     return response()->json(['ownerReservations' => $ownerReservations]);
-    // }
+  
     public function getOwnerReservations($owner)
 {
     $ownerReservations = Reservation::whereHas('apartment', function ($query) use ($owner) {
