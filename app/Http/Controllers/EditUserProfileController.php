@@ -54,12 +54,8 @@ class EditUserProfileController extends Controller
 
             if (!$currentProfile) {
                 $student->save();
-                // $user_id = $student->user_id;
             } 
-            // else {
-            //     $currentProfile->update();
-            //     $user_id = $currentProfile->user_id;
-            // }
+          
 
             $response = [
                 'message' => 'User info and profile picture successfully updated',
