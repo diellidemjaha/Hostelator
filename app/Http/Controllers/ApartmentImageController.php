@@ -9,16 +9,7 @@ use App\Models\Apartment;
 
 class ApartmentImageController extends Controller
 {
-    // public function getImagePaths($apartmentId)
-    // {
-    //     $imagePaths = ApartmentImage::where('apartment_id', $apartmentId)
-    //         ->pluck('image_path')
-    //         ->all();
-
-    //     return response()->json([
-    //         'images' => $imagePaths
-    //     ]);
-    // }
+    //Get image paths
     public function getImagePaths($id)
 {
     $imageData = ApartmentImage::where('apartment_id', $id)
@@ -36,6 +27,7 @@ class ApartmentImageController extends Controller
         'images' => $images,
     ]);
 }
+    //Get image path by specific user
     public function getImageByUserId($user_id, $apartment_id)
     {
         $apartment = Apartment::where('user_id', $user_id)
