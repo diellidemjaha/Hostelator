@@ -13,16 +13,9 @@ class UserProfileController extends Controller
     public function showUserProfile()
     {
         try {
-            // Find the user by the given ID with eager loading the user's profile
-            // $user = User::with('profile')->findOrFail($id);
-            // $userId = 1;
-            // $user = User::with('profile')->where('user_id', $userId)->first();
+    
             $user = auth()->user();
-            // $id = 1;
-            // $user = User::with('profile')->findOrFail($id);
-            // $user =  $users->profile;
-
-
+        
             if (!$user->profile) {
                 return response()->json(['message' => 'User profile not found.'], 404);
             }
@@ -36,6 +29,7 @@ class UserProfileController extends Controller
             ];
 
             return response()->json($response, 200);
+            
         } catch (\Exception $e) {
             $response = [
                 'message' => 'An error occurred while retrieving the profile.' . $e->getMessage(),
