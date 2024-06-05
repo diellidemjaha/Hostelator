@@ -109,7 +109,6 @@ function UserSection() {
         
             const formData = new FormData();
             formData.append('id', userProfile?.profile?.id);
-            // formData.append('user_id', 1);
             formData.append('full_name', profileData.full_name);
             formData.append('profession', profileData.profession);
             formData.append('address', profileData.address);
@@ -306,7 +305,7 @@ function UserSection() {
                                         </Link>
                                         {editTrigger == false ?
 
-<button onClick={() => setEditTrigger(!editTrigger)} type="button" className="btn btn-outline-primary ms-1">
+                                            <button onClick={() => setEditTrigger(!editTrigger)} type="button" className="btn btn-outline-primary ms-1">
                                                 Edit Profile
                                             </button>
                                             :
@@ -493,12 +492,6 @@ function UserSection() {
                                         Parking available
                                     </label>
                                 </div>
-                                {/* <div className="form-check">
-                                    <input className="form-control" type="text" name='address' id='address'></input>
-                                    <label className="form-check-label" htmlFor="flexCheckParking">
-                                        Address
-                                    </label>
-                                </div> */}
 
                                 <div className="form-check">
                                     <input className="form-check-input" type="checkbox" value="" name='wi_fi' id='wi_fi'></input>
