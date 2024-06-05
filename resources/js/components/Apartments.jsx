@@ -15,6 +15,7 @@ function Apartments() {
     useEffect(() => {
         async function fetchApartments() {
             try {
+                //Fetch Apartments from all the users with their specific thumbnail
                 const response = await axios.get(`/api/apartments-with-thumbnails`); 
                 setApartments(response.data);
             } catch (error) {
@@ -23,6 +24,7 @@ function Apartments() {
         }
         async function fetchUsers() {
             try {
+                //Fetch all the users so they can be displayed on the frontend with their apartment
                 const response = await axios.get(`/api/user-names`);
                 setUsers(response.data.names);
             } catch (error) {
