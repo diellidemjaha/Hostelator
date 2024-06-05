@@ -51,6 +51,7 @@ function UpdateApartment() {
     useEffect(() => {
         async function fetchApartment() {
             try {
+                //Fetch the chosen apartment for update list
                 const response = await axios.get(`/api/single-apartment/${apartmentId}`);
                 console.log('Fetched Apartment Data:', response.data);
                 setApartment(response.data);
@@ -100,6 +101,7 @@ function UpdateApartment() {
         console.log('Updated Apartment Data:', updatedApartmentData);
 
         try {
+            //Update the chosen apartment
             const response = await axios.put(`/api/update/apartments/${apartmentId}`, payload);
             if (response.status === 200) {
                 axios.post(`/api/update/apartment-image/${apartmentId}`, updatedApartmentData).then(
@@ -182,7 +184,6 @@ function UpdateApartment() {
                     />
                     <SetMarker position={position} setPosition={setPosition} />
                 </MapContainer>
-                {/* <input type="hidden" name="user_id" value={localStorage.getItem('user_id')} /> */}
                 <input
                     className="form-control mb-1"
                     name="title"
@@ -255,20 +256,6 @@ function UpdateApartment() {
                                     )}
                                 </div>
                             ))}
-                            {/* <div className="col">
-
-                                <input className="form-control mb-1" type="file" name="image1" id="image1" placeholder="Upload image" />
-                            </div>
-                            <div className="col">
-                                <input className="form-control mb-1" type="file" name='image2' id="image2" placeholder="Upload image" />
-                            </div>
-                            <div className="w-100"></div>
-                            <div className="col">
-                                <input className="form-control mb-1" type="file" name='image3' id="image3" placeholder="Upload image" />
-                            </div>
-                            <div className="col">
-                                <input className="form-control mb-1" type="file" name='image4' id="image4" placeholder="Upload image" />
-                            </div> */}
                         </div>
                     </div>
                 </div>
