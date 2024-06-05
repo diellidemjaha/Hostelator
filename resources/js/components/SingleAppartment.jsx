@@ -20,13 +20,6 @@ function SingleApartment() {
   const [rating, setRating] = useState(0)
   const [averageRating, setAverageRating] = useState(0);
 
-  // const getApartments = () => {
-  //   axios.get(`/api/user-apartments/${localStorage.getItem('user_id')}/${id}`).then(
-  //     data => {
-  //       setApartments(data?.data?.apartment)
-  //     }
-  //     )
-  //   }
 
   const handleRating = rate => {
     setRating(rate);
@@ -102,9 +95,7 @@ function SingleApartment() {
   }
   console.log("aparamentet", apartments)
   console.log("Rating", averageRating)
-  // console.log("id", id)
 
-  // console.log("dion",position)
   return (
 
     <>
@@ -151,9 +142,6 @@ function SingleApartment() {
                 <p className="card-text">
                   {apartments?.description}
                 </p>
-                {/* <p className="card-text">
-                  <small className="text-muted">from {apartments?.user_id}</small>
-                </p> */}
               </div>
               <div id="map-container">
 
@@ -167,16 +155,9 @@ function SingleApartment() {
                   />
                   <Marker position={position} />
                 </MapContainer>
-
-                {/* <iframe
-              style={{ width: '100%', height: '300px' }}
-              src="https://maps.google.com/maps?q=prishtina&t=&z=13&ie=UTF8&iwloc=&output=embed"
-              frameBorder="0"
-              allowFullScreen
-              ></iframe> */}
               </div>
+                
               <ul className="list-group">
-                {/* <li className="list-group-item">Address : {apartments?.address}</li> */}
                 <li className="list-group-item">Price : {apartments?.price} €</li>
                 <li className="list-group-item">Parking : {apartments?.parking == 1 ? "Yes" : "No"}</li>
                 <li className="list-group-item">Wi-Fi : {apartments?.wi_fi == 1 ? "Yes" : "No"}</li>
@@ -189,7 +170,6 @@ function SingleApartment() {
                           <>
                             Average Rating: {averageRating}
                             <Rating
-                              // ratingValue={4.38}
                               initialValue={averageRating}
                               size={20}
                               label
@@ -206,12 +186,8 @@ function SingleApartment() {
                       </div>
                     </div>
                   </div>
-                  {/* <button className="btn btn-md btn-primary float-end">Book Now !</button> */}
-                  {/* {users.map((el) => ( */}
                   <button className="btn btn-primary float-end" onClick={() => handleOpenModal(apartments)}>Book now</button>
-                  {/* <button className="btn btn-primary float-end" onClick={() => handleOpenModal(users[0])}>Book now</button> */}
                   </li>
-                  
               </ul>
             </div>
           </div>
