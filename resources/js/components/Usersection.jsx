@@ -46,21 +46,13 @@ function UserSection() {
             </Marker>
         ) : null;
     }
-    
-    // useEffect(() => {
-        //     const userId = localStorage.getItem('user_id');
-        //     console.log('user_id', userId);
-        //     setUserId(userId);
-        // }, []); 
         
         //display user profile
         const fetchUserProfile = async () => {
             try {
-                // const response = await axios.get(`/api/profile/${ localStorage.getItem('user_id')}`); 
-                const response = await axios.get(`/api/profile`); // Replace with the correct API endpoint
+                const response = await axios.get(`/api/profile`); 
 
             if (response.status === 200) {
-                // const userData = response.data.user;
                 
                 setUserProfile(response.data.user);
                 console.log(response.data.user)
@@ -115,14 +107,6 @@ function UserSection() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // if (!userProfile) {
-            //     // Handle the case when userProfile is null
-            //     console.error('User profile is null.');
-            
-            //     return;
-            // }
-            
-
             const formData = new FormData();
             formData.append('id', userProfile?.profile?.id);
             // formData.append('user_id', 1);
@@ -147,9 +131,6 @@ function UserSection() {
                 if (response.status === 200) {
                     console.log(response);
                     Swal.fire('Profile updated succesfully!');
-                    // console.log('Profile updated successfully:', response.data.message);
-                    // // console.log(profileData.user_id);
-                    // console.log('user-profile-info', response.data.user_id);
                     console.log('res', response);
                     
                     fetchUserProfile();
@@ -176,16 +157,7 @@ function UserSection() {
     const [apartments, setApartments] = useState([])
     const [reservations, setReservations] = useState([])
     const [booking, setBooking] = useState([])
-    // const getApartments = () => {
-        //     axios.get(`api/user-apartments/${localStorage.getItem('user_id')}`).then(
-            //         data => {
-                //             setApartments(data?.data?.apartments)
-                //         }
-                //     )
-                // }
-                // useEffect(() => {
-                    //     getApartments();
-                    // }, [])
+
                     const headers = {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                       };
@@ -223,15 +195,6 @@ function UserSection() {
         fetchApartments();
     }, []);
     
-    // console.log("aparamentet", apartments)
-    
-    // const map = useMapEvents({
-        //     click: (e) => {
-            //       const { lat, lng } = e.latlng;
-            //       setLatitude(lat);
-            //       setLongitude(lng);
-            //     },
-            //   });
             
             console.log('reservations', booking)
             const handleAddApartment = async (e) => {
