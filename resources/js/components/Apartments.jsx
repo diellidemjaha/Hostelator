@@ -56,7 +56,7 @@ function Apartments() {
                     <div className="col-sm-9">
 
                         <main>
-                            <h2>Explore these recommended locations</h2>
+                            <h1>Explore these recommended locations</h1>
                             <p>some of the recent apartments that were added</p>
                             {users.map((el) => (
                                 <div className="card m-2" key={el.id}>

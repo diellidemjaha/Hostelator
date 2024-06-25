@@ -104,11 +104,13 @@ function UserSection() {
         const file = e.target.files[0];
         setProfileData({ ...profileData, profile_pic: file });
     };
+
+    const userId = localStorage.getItem("user_id")
     const handleSubmit = async (e) => {
         e.preventDefault();
         
             const formData = new FormData();
-            formData.append('id', userProfile?.profile?.id);
+            formData.append('id', userId);
             formData.append('full_name', profileData.full_name);
             formData.append('profession', profileData.profession);
             formData.append('address', profileData.address);
@@ -330,7 +332,10 @@ function UserSection() {
                                         {editTrigger == true ?
                                             <input type="url" className='form-control' defaultValue={profileData.website_link} onChange={handleInputChange} name="website_link" id='' />
                                             :
-                                            <p className="mb-0">{userProfile?.profile?.website_link}</p>
+                                            <>
+                                            <a href={userProfile?.profile?.website_link ? `http://${userProfile.profile.website_link}` : null}>
+                                                <p className="mb-0">{userProfile?.profile?.website_link}</p></a>
+                                            </>
                                         }
                                     </li>
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
@@ -339,7 +344,8 @@ function UserSection() {
                                             <input defaultValue={profileData.twitter_link} onChange={handleInputChange} type="url" className='form-control' name="twitter_link" id="" />
                                             :
                                             <>
-                                                <p className="mb-0">{userProfile?.profile?.twitter_link}</p>
+                                                <a href={userProfile?.profile?.website_link ? `http://${userProfile.profile.twitter_link}` : null}>
+                                                <p className="mb-0">{userProfile?.profile?.twitter_link}</p></a>
                                             </>
                                         }
                                     </li>
@@ -348,7 +354,10 @@ function UserSection() {
                                         {editTrigger == true ?
                                             <input type="url" defaultValue={profileData.instagram_link} onChange={handleInputChange} className='form-control' name="instagram_link" id="" />
                                             :
-                                            <p className="mb-0">{userProfile?.profile?.instagram_link}</p>
+                                            <>
+                                             <a href={userProfile?.profile?.website_link ? `http://${userProfile.profile.instagram_link}` : null}>
+                                            <p className="mb-0">{userProfile?.profile?.instagram_link}</p></a>
+                                            </>
                                         }
                                     </li>
                                     <li className="list-group-item d-flex justify-content-between align-items-center p-3">
@@ -356,7 +365,10 @@ function UserSection() {
                                         {editTrigger == true ?
                                             <input type="url" defaultValue={profileData.facebook_link} onChange={handleInputChange} className='form-control' name="facebook_link" id="" />
                                             :
-                                            <p className="mb-0">{userProfile?.profile?.facebook_link}</p>
+                                            <>
+                                             <a href={userProfile?.profile?.website_link ? `http://${userProfile.profile.facebook_link}` : null}>
+                                            <p className="mb-0">{userProfile?.profile?.facebook_link}</p></a>
+                                            </>
                                         }
                                     </li>
                                 </ul>

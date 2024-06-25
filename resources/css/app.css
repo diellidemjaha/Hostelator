@@ -24,6 +24,9 @@
     height: 100vh; /* Occupy the entire viewport height */
 }
 
+h1 {
+    font-size: 3.2em;
+}
 /* Remove margin and padding from Bootstrap grid elements */
 .container,
 .row,
