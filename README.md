@@ -1,6 +1,8 @@
 ## Hostelator
 Hostelator is a web application project designed to simplify hostel management. It provides a user-friendly interface for managing various aspects of hostels, including:
 
+![Example Screenshot](hostelator-screenshot.png)
+
 ## Authentication
 • User Profiles
 • Apartment Showcase
