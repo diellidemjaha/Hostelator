@@ -19,11 +19,13 @@ Hostelator is a web application project designed to simplify hostel management. 
 • Reservations: Manage apartment reservations efficiently.
 
 ## Installation
-### Prerequisites
-• PHP >= 7.4
-• Composer
-• Node.js and npm
-• MySQL
+
+>[!NOTE]
+> ### Prerequisites
+>• PHP >= 7.4
+>• Composer
+>• Node.js and npm
+>• MySQL
 
 ## Steps to Install
 
@@ -85,11 +87,12 @@ Start the development server:
 Copy code
 php artisan serve
 ```
-
-The application will be visible at http://localhost:8000.
+>[!NOTE]
+> The application will be visible at http://localhost:8000.
 
 ## Contributing
 We welcome contributions! Please submit pull requests to the main branch and ensure all tests are passing.
 
-## License
-This project is licensed under the MIT License.
+>[!NOTE]
+> ## License
+> This project is licensed under the MIT License.
